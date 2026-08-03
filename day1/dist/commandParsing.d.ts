@@ -1,1 +1,1 @@
-export declare function parseCommand(command: string): void;
+export declare function parseCommand(command: string, option: string): void;

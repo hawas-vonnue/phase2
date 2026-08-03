@@ -1,20 +1,36 @@
 import readline from "node:readline";
 import { displayCommands, findEnvironment, findMemoryDetails, findOS, findPWD, findVersion, } from "./dataCollection.js";
-export function parseCommand(command) {
+export function parseCommand(command, option) {
     switch (command) {
         case "os":
-            console.log(findOS());
+            let osType = findOS();
+            if (option === "--json")
+                console.log({ osType: osType });
+            else
+                console.log(osType);
             break;
         case "version":
-            console.log("kernel version:", findVersion());
+            let kernelVersion = findVersion();
+            if (option === "--json")
+                console.log({ kernelVersion });
+            else
+                console.log(kernelVersion);
             break;
         case "memory":
+            // no need for separate --json flag it is already in machine-readable form
             console.log(findMemoryDetails());
             break;
         case "pwd":
-            console.log(findPWD());
+            let pwd = findPWD();
+            if (option === "--json")
+                console.log({ current_directory: pwd });
+            if (option === "--json")
+                console.log({ current_directory: pwd });
+            else
+                console.log(pwd);
             break;
         case "env":
+            // no need for separate --json flag it is already in machine-readable form
             console.log(findEnvironment());
             break;
         case "help":
@@ -31,12 +47,15 @@ if (process.env.NODE_ENV !== "test") {
         output: process.stdout,
     });
     function waitForUserInput() {
-        rl.question("Command(type exit to exit):", function (command) {
-            if (command === "exit") {
+        rl.question("Command(type exit to exit):", function (commandLine) {
+            if (commandLine === "exit") {
                 rl.close();
             }
             else {
-                parseCommand(command);
+                const commandLineArray = commandLine.split(/\s+/);
+                const command = commandLineArray[0];
+                const option = commandLineArray[1];
+                parseCommand(command, option);
                 waitForUserInput();
             }
         });
@@ -46,9 +65,7 @@ if (process.env.NODE_ENV !== "test") {
     // instead of inputing commands to standard input
     // function getCommandLineArguments() {
     //     if (process.argv.length < 3) return;
-    //     for (let i = 2; i < process.argv.length; i++) {
-    //         parseCommand(process.argv[i]);
-    //     }
+    //     parseCommand(process.argv[2], process.argv[3]);
     //     rl.close();
     // }
     // getCommandLineArguments();
