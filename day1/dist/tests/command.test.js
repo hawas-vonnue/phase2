@@ -2,22 +2,22 @@ import { parseCommand } from "../commandParsing";
 import { findEnvironment, findMemoryDetails, findOS, findPWD, findVersion, } from "../dataCollection";
 jest.mock("../dataCollection");
 test("test os", () => {
-    parseCommand("os");
+    parseCommand("os", "");
     expect(findOS).toHaveBeenCalled();
 });
 test("test memory", () => {
-    parseCommand("memory");
+    parseCommand("memory", "");
     expect(findMemoryDetails).toHaveBeenCalled();
 });
 test("testing version", () => {
-    parseCommand("version");
+    parseCommand("version", "");
     expect(findVersion).toHaveBeenCalled();
 });
 test("testing current directory", () => {
-    parseCommand("pwd");
+    parseCommand("pwd", "");
     expect(findPWD).toHaveBeenCalled();
 });
 test("testing environment", () => {
-    parseCommand("env");
+    parseCommand("env", "");
     expect(findEnvironment).toHaveBeenCalled();
 });
