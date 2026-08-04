@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "build": "tsc",
+        "start": "npm run build -- -w"
+    },
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^26.1.2",
+        "jest": "^30.4.2",
+        "ts-jest": "^29.4.12"
+    },
+    "type": "module"
+}
