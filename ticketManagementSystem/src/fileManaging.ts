@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { writeFile } from "node:fs/promises";
 
-type Ticket = {
+export type Ticket = {
     id: number;
     title: string;
     description: string;

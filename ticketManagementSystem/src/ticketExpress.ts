@@ -108,8 +108,14 @@ async function assignHandler(req: Request, res: Response, next: NextFunction) {
 async function deleteHandler(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
     const ticket = await deleteTicket(id);
-    if (ticket === false) next();
-    res.send(200).json({ status: "Success", ticket });
+    console.log(ticket);
+    if (ticket === false) {
+        console.log("inside");
+        next();
+    } else {
+        console.log("inside else");
+        res.send(200).json({ status: "Success", ticket });
+    }
 }
 
 function notFoundHandler(req: Request, res: Response, next: NextFunction) {
