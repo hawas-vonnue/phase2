@@ -1,1 +1,1 @@
-{"tickets":[]}
+{"tickets":[{"title":"First Ticket","description":"This is the first ticket created.","priority":"High","status":"Completed","id":1,"assignee":"Employee 1"}]}
