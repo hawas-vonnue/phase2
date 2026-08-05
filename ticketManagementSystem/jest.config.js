@@ -13,6 +13,7 @@ export default {
     preset: "ts-jest",
     testPathIgnorePatterns: [`<rootDir>/dist/`],
     moduleNameMapper: {
-        "(.+)\\.js": "$1",
+        // "(.+)\\.js": "$1",
+        // "^(\\..*)\\.js$": "$1",
     },
 };
