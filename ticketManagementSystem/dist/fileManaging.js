@@ -53,7 +53,6 @@ export async function list() {
     const tickets = await readFromFile();
     if (tickets === false)
         return false;
-    tickets.forEach((ticket) => console.log(ticket));
     return tickets;
 }
 export async function view(id) {
@@ -63,7 +62,6 @@ export async function view(id) {
     const ticket = tickets.find((ticket) => ticket.id === id);
     if (ticket === undefined)
         return false;
-    console.log(ticket);
     return ticket;
 }
 export async function updateStatus(id, newStatus) {
@@ -74,7 +72,6 @@ export async function updateStatus(id, newStatus) {
     if (ticket === undefined)
         return false;
     ticket.status = newStatus;
-    console.log(tickets);
     if ((await writeToFile(tickets)) !== false)
         return ticket;
     else
@@ -88,7 +85,6 @@ export async function assign(id, assignee) {
     if (ticket === undefined)
         return false;
     ticket.assignee = assignee;
-    console.log(tickets);
     if ((await writeToFile(tickets)) !== false)
         return ticket;
     else
@@ -103,7 +99,6 @@ export async function deleteTicket(id) {
         return false;
     const index = tickets.indexOf(ticket);
     tickets.splice(index, 1);
-    console.log(tickets);
     if ((await writeToFile(tickets)) !== false)
         return ticket;
     else
@@ -114,24 +109,24 @@ export async function clear() {
     await writeToFile([]);
 }
 //------------------------------------Test--------------------------------------
-await clear();
-await createTicket({
-    title: "First title",
-    description: "First description",
-    priority: "High",
-});
-await createTicket({
-    title: "Second title",
-    description: "second description",
-    priority: "Low",
-});
-await list();
-console.log("-------------------------------------------------------------");
-await view(2);
-console.log("-------------------------------------------------------------");
-await updateStatus(1, "Completed");
-console.log("-------------------------------------------------------------");
-await assign(1, "myself");
-console.log("-------------------------------------------------------------");
-await deleteTicket(2);
-await clear();
+// await clear();
+// await createTicket({
+//     title: "First title",
+//     description: "First description",
+//     priority: "High",
+// });
+// await createTicket({
+//     title: "Second title",
+//     description: "second description",
+//     priority: "Low",
+// });
+// await list();
+// console.log("-------------------------------------------------------------");
+// await view(2);
+// console.log("-------------------------------------------------------------");
+// await updateStatus(1, "Completed");
+// console.log("-------------------------------------------------------------");
+// await assign(1, "myself");
+// console.log("-------------------------------------------------------------");
+// await deleteTicket(2);
+// await clear();
