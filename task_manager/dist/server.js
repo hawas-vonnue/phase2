@@ -4,21 +4,23 @@ export const server = http.createServer(async (request, response) => {
     request.on("error", (err) => {
         console.error(err);
     });
+    console.log("main");
     const method = request.method;
     const url = request.url;
     if (method === "GET" && url === "/tasks") {
         await getTasksResponder(request, response);
     }
-    else if (method === "GET" && url?.includes("/tasks/:")) {
+    else if (method === "GET" && url?.includes("/tasks/")) {
+        console.log("firsr");
         await getTaskResponder(request, response, url);
     }
-    else if (method === "DELETE" && url?.includes("/tasks/:")) {
+    else if (method === "DELETE" && url?.includes("/tasks/")) {
         await deleteTaskResponder(request, response, url);
     }
     else if (method === "POST") {
         await postResponder(request, response);
     }
-    else if (method === "PATCH" && url?.includes("/tasks/:")) {
+    else if (method === "PATCH" && url?.includes("/tasks/")) {
         await patchResponder(request, response, url);
     }
     else {
@@ -35,7 +37,10 @@ async function getTasksResponder(request, response) {
     response.end(JSON.stringify(tasks));
 }
 async function getTaskResponder(request, response, url) {
-    const id = Number(url.split(":")[1]);
+    console.log("start");
+    const id = Number(url.split("/")[2]);
+    console.log("hello");
+    console.log(id);
     let task = await getSpecificTask(id);
     response.setHeader("content-type", "application/json");
     if (task === false) {
@@ -48,7 +53,7 @@ async function getTaskResponder(request, response, url) {
     }
 }
 async function deleteTaskResponder(request, response, url) {
-    const id = Number(url.split(":")[1]);
+    const id = Number(url.split("/")[2]);
     let task = await deleteTask(id);
     response.setHeader("content-type", "applicaton/json");
     if (task === false) {
@@ -102,7 +107,7 @@ async function postResponder(request, response) {
     });
 }
 async function patchResponder(request, response, url) {
-    let id = Number(url.split(":")[1]);
+    let id = Number(url.split("/")[2]);
     let bodyArray = [];
     let bodyJSON;
     response.setHeader("content-type", "application/json");

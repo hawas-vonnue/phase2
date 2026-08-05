@@ -15,13 +15,13 @@ export const server = http.createServer(async (request, response) => {
     const url = request.url;
     if (method === "GET" && url === "/tasks") {
         await getTasksResponder(request, response);
-    } else if (method === "GET" && url?.includes("/tasks/:")) {
+    } else if (method === "GET" && url?.includes("/tasks/")) {
         await getTaskResponder(request, response, url);
-    } else if (method === "DELETE" && url?.includes("/tasks/:")) {
+    } else if (method === "DELETE" && url?.includes("/tasks/")) {
         await deleteTaskResponder(request, response, url);
     } else if (method === "POST") {
         await postResponder(request, response);
-    } else if (method === "PATCH" && url?.includes("/tasks/:")) {
+    } else if (method === "PATCH" && url?.includes("/tasks/")) {
         await patchResponder(request, response, url);
     } else {
         response.statusCode = 400;
@@ -45,7 +45,7 @@ async function getTaskResponder(
     response: ServerResponse,
     url: string
 ) {
-    const id = Number(url.split(":")[1]);
+    const id = Number(url.split("/")[2]);
     let task = await getSpecificTask(id);
 
     response.setHeader("content-type", "application/json");
@@ -63,7 +63,7 @@ async function deleteTaskResponder(
     response: ServerResponse,
     url: string
 ) {
-    const id = Number(url.split(":")[1]);
+    const id = Number(url.split("/")[2]);
     let task = await deleteTask(id);
 
     response.setHeader("content-type", "applicaton/json");
@@ -125,7 +125,7 @@ async function patchResponder(
     response: ServerResponse,
     url: string
 ) {
-    let id = Number(url.split(":")[1]);
+    let id = Number(url.split("/")[2]);
     let bodyArray: Buffer[] = [];
     let bodyJSON;
     response.setHeader("content-type", "application/json");
