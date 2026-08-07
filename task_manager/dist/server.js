@@ -1,5 +1,5 @@
 import http from "node:http";
-import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, } from "./modified_tasks.js";
+import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, filterTasks, } from "./modified_tasks.js";
 export const server = http.createServer(async (request, response) => {
     request.on("error", (err) => {
         console.error(err);
@@ -8,6 +8,9 @@ export const server = http.createServer(async (request, response) => {
     const url = request.url;
     if (method === "GET" && url === "/tasks") {
         await getTasksResponder(request, response);
+    }
+    else if (method === "GET" && url?.includes("/tasks/filter/")) {
+        await filterResponder(request, response, url);
     }
     else if (method === "GET" && url?.includes("/tasks/")) {
         await getTaskResponder(request, response, url);
@@ -142,4 +145,10 @@ async function patchResponder(request, response, url) {
         let status = "Failure due to bad request";
         response.end(JSON.stringify(status));
     }
+}
+async function filterResponder(request, response, url) {
+    const query = url.split("/")[3];
+    const result = await filterTasks(query);
+    response.statusCode = 200;
+    response.end(JSON.stringify(result));
 }
