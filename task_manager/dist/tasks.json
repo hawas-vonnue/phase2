@@ -1,1 +1,7 @@
-{"tasks":[{"id":1,"description":"Hello","type":"completed"},{"id":2,"description":"hey","type":"pending"},{"id":3,"description":"helooooo","type":"pending"}]}
+{
+    "tasks": [
+        { "id": 1, "description": "Hello", "type": "completed" },
+        { "id": 2, "description": "hey", "type": "pending" },
+        { "id": 3, "description": "helooooo", "type": "pending" }
+    ]
+}
