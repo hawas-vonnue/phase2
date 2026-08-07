@@ -1,17 +1,18 @@
 import http from "node:http";
-import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, } from "./modified_tasks.js";
+import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, filterTasks, } from "./modified_tasks.js";
 export const server = http.createServer(async (request, response) => {
     request.on("error", (err) => {
         console.error(err);
     });
-    console.log("main");
     const method = request.method;
     const url = request.url;
     if (method === "GET" && url === "/tasks") {
         await getTasksResponder(request, response);
     }
+    else if (method === "GET" && url?.includes("/tasks/filter/")) {
+        await filterResponder(request, response, url);
+    }
     else if (method === "GET" && url?.includes("/tasks/")) {
-        console.log("firsr");
         await getTaskResponder(request, response, url);
     }
     else if (method === "DELETE" && url?.includes("/tasks/")) {
@@ -37,10 +38,7 @@ async function getTasksResponder(request, response) {
     response.end(JSON.stringify(tasks));
 }
 async function getTaskResponder(request, response, url) {
-    console.log("start");
     const id = Number(url.split("/")[2]);
-    console.log("hello");
-    console.log(id);
     let task = await getSpecificTask(id);
     response.setHeader("content-type", "application/json");
     if (task === false) {
@@ -147,4 +145,10 @@ async function patchResponder(request, response, url) {
         let status = "Failure due to bad request";
         response.end(JSON.stringify(status));
     }
+}
+async function filterResponder(request, response, url) {
+    const query = url.split("/")[3];
+    const result = await filterTasks(query);
+    response.statusCode = 200;
+    response.end(JSON.stringify(result));
 }

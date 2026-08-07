@@ -82,3 +82,16 @@ export async function updateTask(id, task) {
     await writeToFile(data);
     return true;
 }
+export async function filterTasks(query) {
+    const data = await readFromFile();
+    if (!data)
+        return;
+    if (query === "completed") {
+        const completed = data.filter((task) => task.type === "completed");
+        return completed;
+    }
+    if (query === "pending") {
+        const pending = data.filter((task) => task.type === "pending");
+        return pending;
+    }
+}

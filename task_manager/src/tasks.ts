@@ -98,6 +98,8 @@ export async function filterTasks() {
     const pending: Task[] = data.filter((task) => task.type === "pending");
     console.log("completed tasks:", completed);
     console.log("pending tasks:", pending);
+    await writeToFile(completed, "completed.json");
+    await writeToFile(pending, "pending.json");
 }
 
 //----------------------------------------------Test----------------------------

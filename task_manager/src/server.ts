@@ -5,6 +5,7 @@ import {
     getSpecificTask,
     getTasks,
     updateTask,
+    filterTasks,
 } from "./modified_tasks.js";
 
 export const server = http.createServer(async (request, response) => {
@@ -15,6 +16,8 @@ export const server = http.createServer(async (request, response) => {
     const url = request.url;
     if (method === "GET" && url === "/tasks") {
         await getTasksResponder(request, response);
+    } else if (method === "GET" && url?.includes("/tasks/filter/")) {
+        await filterResponder(request, response, url);
     } else if (method === "GET" && url?.includes("/tasks/")) {
         await getTaskResponder(request, response, url);
     } else if (method === "DELETE" && url?.includes("/tasks/")) {
@@ -165,4 +168,15 @@ async function patchResponder(
         let status = "Failure due to bad request";
         response.end(JSON.stringify(status));
     }
+}
+
+async function filterResponder(
+    request: IncomingMessage,
+    response: ServerResponse,
+    url: string
+) {
+    const query = url.split("/")[3];
+    const result = await filterTasks(query);
+    response.statusCode = 200;
+    response.end(JSON.stringify(result));
 }
