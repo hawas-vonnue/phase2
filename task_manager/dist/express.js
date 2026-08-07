@@ -1,5 +1,5 @@
 import express from "express";
-import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, } from "./modified_tasks.js";
+import { addToList, deleteTask, getSpecificTask, getTasks, updateTask, filterTasks, } from "./modified_tasks.js";
 const app = express();
 //parse json bodies
 app.use(express.json());
@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 app.get("/health", (req, res) => {
     res.status(200).send("Ok");
 });
+app.get("/tasks/filter/:query", filterResponder);
 app.get("/tasks", getTasksResponder);
 app.get("/tasks/:id", getTaskResponder);
 app.post("/tasks", postResponder);
@@ -105,4 +106,10 @@ async function patchResponder(request, response, next) {
     catch (error) {
         next(error);
     }
+}
+async function filterResponder(request, response) {
+    const query = String(request.params.query);
+    const result = await filterTasks(query);
+    response.statusCode = 200;
+    response.end(JSON.stringify(result));
 }

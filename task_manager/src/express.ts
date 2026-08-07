@@ -5,6 +5,7 @@ import {
     getSpecificTask,
     getTasks,
     updateTask,
+    filterTasks,
 } from "./modified_tasks.js";
 
 const app = express();
@@ -31,6 +32,7 @@ app.get("/health", (req: Request, res: Response) => {
     res.status(200).send("Ok");
 });
 
+app.get("/tasks/filter/:query", filterResponder);
 app.get("/tasks", getTasksResponder);
 app.get("/tasks/:id", getTaskResponder);
 app.post("/tasks", postResponder);
@@ -145,4 +147,11 @@ async function patchResponder(
     } catch (error) {
         next(error);
     }
+}
+
+async function filterResponder(request: Request, response: Response) {
+    const query = String(request.params.query);
+    const result = await filterTasks(query);
+    response.statusCode = 200;
+    response.end(JSON.stringify(result));
 }
