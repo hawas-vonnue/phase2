@@ -1,4 +1,9 @@
-import express, { type Response, type Request, NextFunction } from "express";
+import express, {
+    type Response,
+    type Request,
+    NextFunction,
+    response,
+} from "express";
 import {
     addToList,
     deleteTask,
@@ -9,12 +14,15 @@ import {
 } from "./modified_tasks.js";
 
 const app = express();
+let requestId = 0;
 
 //parse json bodies
 app.use(express.json());
 
 //request logging
 app.use((req, res, next) => {
+    requestId++;
+    console.log("request Id:", requestId);
     console.log("method:", req.method);
     console.log("params", req.params);
     console.log("body:", req.body);
@@ -29,7 +37,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 //health endpoint
 app.get("/health", (req: Request, res: Response) => {
-    res.status(200).send("Ok");
+    res.status(200).send({ requestId, response: "Ok" });
 });
 
 app.get("/tasks/filter/:query", filterResponder);
@@ -47,12 +55,12 @@ app.use(errorHandler);
 app.listen(8080);
 
 function notFoundHandler(req: Request, res: Response) {
-    res.status(404).json("Not Found");
+    res.status(404).json({ requestId, response: "Not Found" });
 }
 
 function errorHandler(err: Error, req: Request, res: Response) {
     res.status(500);
-    res.send(`error ${err}`);
+    res.send({ requestId, response: `error ${err}` });
 }
 
 async function getTasksResponder(
@@ -61,7 +69,7 @@ async function getTasksResponder(
     next: NextFunction
 ) {
     const tasks = await getTasks();
-    response.status(200).json(tasks);
+    response.status(200).json({ requestId, response: tasks });
 }
 
 async function getTaskResponder(
@@ -75,7 +83,7 @@ async function getTaskResponder(
     if (task === false) {
         next();
     } else {
-        response.status(200).json(task);
+        response.status(200).json({ requestId, response: task });
     }
 }
 
@@ -91,7 +99,7 @@ async function deleteTaskResponder(
     if (task === false) {
         next();
     } else {
-        response.status(200).json(task);
+        response.status(200).json({ requestId, response: task });
     }
 }
 
@@ -110,12 +118,14 @@ async function postResponder(
         ) {
             let flag = await addToList(body.description);
             if (flag) {
-                response.status(200).json("Success");
+                response.status(200).json({ requestId, response: "Success" });
             } else {
-                response.status(500).json("Failure");
+                response.status(500).json({ requestId, response: "Failure" });
             }
         } else {
-            response.status(400).json("Failure due to bad request");
+            response
+                .status(400)
+                .json({ requestId, response: "Failure due to bad request" });
         }
     } catch (error) {
         next(error);
@@ -137,12 +147,14 @@ async function patchResponder(
             typeof body.description === "string"
         ) {
             if (await updateTask(id, body.description)) {
-                response.status(200).json("updated Successfully");
+                response
+                    .status(200)
+                    .json({ requestId, response: "updated Successfully" });
             } else {
                 next();
             }
         } else {
-            response.status(400).json("Bad Request");
+            response.status(400).json({ requestId, response: "Bad Request" });
         }
     } catch (error) {
         next(error);
@@ -153,5 +165,5 @@ async function filterResponder(request: Request, response: Response) {
     const query = String(request.params.query);
     const result = await filterTasks(query);
     response.statusCode = 200;
-    response.end(JSON.stringify(result));
+    response.end(JSON.stringify({ requestId, response: result }));
 }
