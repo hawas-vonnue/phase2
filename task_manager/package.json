@@ -4,6 +4,7 @@
         "start": "npm run build -- -w"
     },
     "devDependencies": {
+        "@types/express": "^5.0.6",
         "@types/jest": "^30.0.0",
         "@types/node": "^26.1.2",
         "@types/supertest": "^7.2.1",
@@ -11,5 +12,8 @@
         "supertest": "^7.2.2",
         "ts-jest": "^29.4.12"
     },
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "express": "^5.2.1"
+    }
 }
