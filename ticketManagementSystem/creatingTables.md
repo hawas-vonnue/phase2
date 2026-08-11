@@ -1,44 +1,42 @@
-# PostgreSQL queries
+# Creating tables
 
-## Creating tables
-
-### Customers table
+## Customers table
 
 ```
-CREATE TABLE customers(customerId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36) NOT NULL);
+CREATE TABLE customers(customerId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36) NOT NULL,email VARCHAR(36) NOT NULL UNIQUE);
 ```
 
-### Category table
+## Category table
 
 ```
 CREATE TABLE categories(categoryId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY, category VARCHAR(36) NOT NULL);
 ```
 
-### Tickets table
+## Tickets table
 
 ```
-CREATE TABLE tickets(ticketId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,title varchar(36),description TEXT,priority VARCHAR(10) CHECK(priority IN('High','Medium','Low')),status VARCHAR(10),customerId INT NOT NULL,categoryId INT NOT NULL,FOREIGN KEY(customerId) REFERENCES customers(customerId) ON DELETE CASCADE,FOREIGN KEY(categoryId) REFERENCES categories(categoryId)ON DELETE CASCADE);
+CREATE TABLE tickets(ticketId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,title varchar(36),description TEXT,priority VARCHAR(10),status VARCHAR(10),customerId INT NOT NULL,categoryId INT NOT NULL,created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(customerId) REFERENCES customers(customerId),FOREIGN KEY(categoryId) REFERENCES categories(categoryId));
 ```
 
-### users table
+## users table
 
 ```
-CREATE TABLE users(userId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36) UNIQUE);
+CREATE TABLE users(userId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36),email VARCHAR(36) NOT NULL UNIQUE);
 ```
 
-### Comments table
+## Comments table
 
 ```
 CREATE TABLE comments(commentId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,text TEXT,ticketId INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId)) ON DELETE CASCADE;
 ```
 
-### assignments table
+## assignments table
 
 ```
 CREATE TABLE assignments(id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, ticketId INT,userId INT ,FOREIGN KEY(ticketId) REFERENCES tickets(ticketId) ON DELETE CASCADE, FOREIGN KEY(userId) REFERENCES users(userId)ON DELETE CASCADE);
 ```
 
-### status_history table
+## status_history table
 
 ```
 CREATE TABLE status_history(statusId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,ticketId INT,currentStatus VARCHAR(10),previousStatus VARCHAR(10),updatedBy INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId) ON DELETE CASCADE,FOREIGN KEY(updatedBy) REFERENCES users(userId)ON DELETE CASCADE);
