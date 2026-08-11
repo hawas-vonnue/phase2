@@ -49,8 +49,7 @@ erDiagram
     tickets||--o{ comments: "contains"
     categories||--o{ tickets: "classifies"
     tickets||--o{ assignments: "assigned_to"
-    users||--o{ assignments: "works_on"
-    tickets||--o{ status_history: "tracks_changes"
    users||--o{status_history: "updates"
+    tickets||--o{ status_history: "tracks_changes"
 
 ```
