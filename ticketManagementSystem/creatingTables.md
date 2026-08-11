@@ -3,7 +3,7 @@
 ## Customers table
 
 ```
-CREATE TABLE customers(customerId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36) NOT NULL);
+CREATE TABLE customers(customerId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36) NOT NULL,email VARCHAR(36) NOT NULL UNIQUE);
 ```
 
 ## Category table
@@ -15,13 +15,13 @@ CREATE TABLE categories(categoryId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 ## Tickets table
 
 ```
-CREATE TABLE tickets(ticketId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,title varchar(36),description TEXT,priority VARCHAR(10),status VARCHAR(10),customerId INT NOT NULL,categoryId INT NOT NULL,FOREIGN KEY(customerId) REFERENCES customers(customerId),FOREIGN KEY(categoryId) REFERENCES categories(categoryId));
+CREATE TABLE tickets(ticketId int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,title varchar(36),description TEXT,priority VARCHAR(10),status VARCHAR(10),customerId INT NOT NULL,categoryId INT NOT NULL,created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(customerId) REFERENCES customers(customerId),FOREIGN KEY(categoryId) REFERENCES categories(categoryId));
 ```
 
 ## users table
 
 ```
-CREATE TABLE users(userId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36));
+CREATE TABLE users(userId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARCHAR(36),email VARCHAR(36) NOT NULL UNIQUE);
 ```
 
 ## Comments table

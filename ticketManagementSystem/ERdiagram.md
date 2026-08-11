@@ -5,11 +5,14 @@ erDiagram
     users{
         int userId PK
         VARCHAR(36) name
+        VARCHAR(36) email
     }
     customers{
         int customerId PK
         VARCHAR(36) name
+        VARCHAR(36) email
     }
+
     categories{
         int categoryId PK
         VARCHAR(36) category
@@ -22,6 +25,7 @@ erDiagram
         VARCHAR(10) status
         int customerId FK
         int categoryId FK
+        TIMESTAMPTZ createdAt
     }
     comments{
         int commentId PK
