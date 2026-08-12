@@ -8,7 +8,6 @@ EXPLAIN ANALYSE SELECT * FROM employees WHERE name = 'Employee 1';
 --    Rows Removed by Filter: 4
 --  Planning Time: 0.098 ms
 --  Execution Time: 0.038 ms
--- (5 rows)
 
 
 EXPLAIN ANALYSE SELECT * FROM equipments WHERE name = 'hammer';
@@ -17,7 +16,6 @@ EXPLAIN ANALYSE SELECT * FROM equipments WHERE name = 'hammer';
 --    Rows Removed by Filter: 2
 --  Planning Time: 0.089 ms
 --  Execution Time: 0.041 ms
--- (5 rows)
 
 -- After index on employee.name
 
@@ -29,7 +27,6 @@ EXPLAIN ANALYSE SELECT * FROM employees WHERE name = 'Employee 1';
 --    Rows Removed by Filter: 4
 --  Planning Time: 0.287 ms
 --  Execution Time: 0.036 ms
--- (5 rows)
 
 
 CREATE INDEX equipment_name ON equipments(name);
@@ -40,4 +37,3 @@ EXPLAIN ANALYSE SELECT * FROM equipments WHERE name = 'hammer';
 --    Rows Removed by Filter: 2
 --  Planning Time: 0.104 ms
 --  Execution Time: 0.035 ms
--- (5 rows)
