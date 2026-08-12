@@ -2,39 +2,26 @@
 
 ## Before Index
 
-- `EXPLAIN ANALYSE select * from tickets;`
-    - Seq Scan on tickets (cost=0.00..13.30 rows=330 width=218) (actual time=0.016..0.019 rows=2 loops=1)
-    - Planning Time: 0.106 ms
-    - Execution Time: 0.040 ms
-    - (3 rows)
-
-- `EXPLAIN ANALYSE select * from tickets where ticketId = 2;`
-    - Index Scan using tickets_pkey on tickets (cost=0.15..8.17 rows=1 width=218) (actual time=0.008..0.009 rows=1 loops=1)
-    - Index Cond: (ticketid = 2)
-    - Planning Time: 0.146 ms
-    - Execution Time: 0.054 ms
-    - (4 rows)
+- `EXPLAIN ANALYSE select * from tickets where customerId= 1;`
+    - Seq Scan on tickets (cost=0.00..14.12 rows=2 width=218) (actual time=0.014..0.017 rows=1 loops=1)
+    - Filter: (customerid = 1)
+    - Rows Removed by Filter: 1
+    - Planning Time: 0.105 ms
+    - Execution Time: 0.038 ms
 
 ## Creating Index
 
-- `CREATE INDEX ticket_id ON tickets(ticketId);`
+- `CREATE INDEX ticket_id ON tickets(customerId);`
 
 ## After Index
 
-- `EXPLAIN ANALYSE select * from tickets;`
-    - Seq Scan on tickets (cost=0.00..1.02 rows=2 width=218) (actual time=0.009..0.011 rows=2 loops=1)
-    - Planning Time: 0.379 ms
-    - Execution Time: 0.029 ms
-    - (3 rows)
-
-- `EXPLAIN ANALYSE select * from tickets where ticketId = 2;`
-    - Seq Scan on tickets (cost=0.00..1.02 rows=1 width=218) (actual time=0.023..0.025 rows=1 loops=1)
-    - Filter: (ticketid = 2)
+- `EXPLAIN ANALYSE select * from tickets where customerId= 1;`
+    - Seq Scan on tickets (cost=0.00..1.02 rows=1 width=218) (actual time=0.015..0.017 rows=1 loops=1)
+    - Filter: (customerid = 1)
     - Rows Removed by Filter: 1
-    - Planning Time: 0.151 ms
-    - Execution Time: 0.049 ms
-    - (5 rows)
+    - Planning Time: 0.113 ms
+    - Execution Time: 0.037 ms
 
 # Justification For Index
 
-- After Index the execution time is reduced. Created Index on ticketId because it is the searched one in tickets.
+- After Index the execution time is reduced. Created Index on customerId in tickets because it is the searched one in tickets.
