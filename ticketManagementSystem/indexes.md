@@ -15,9 +15,11 @@
     - Execution Time: 0.054 ms
     - (4 rows)
 
-## After Index
+## Creating Index
 
 - `CREATE INDEX ticket_id ON tickets(ticketId);`
+
+## After Index
 
 - `EXPLAIN ANALYSE select * from tickets;`
     - Seq Scan on tickets (cost=0.00..1.02 rows=2 width=218) (actual time=0.009..0.011 rows=2 loops=1)
@@ -35,4 +37,4 @@
 
 # Justification For Index
 
-- After Index the execution time is reduced. Created Index on ticketId becasue it is the searched one in tickets.
+- After Index the execution time is reduced. Created Index on ticketId because it is the searched one in tickets.
