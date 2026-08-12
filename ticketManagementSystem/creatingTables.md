@@ -27,17 +27,17 @@ CREATE TABLE users(userId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,name VARC
 ## Comments table
 
 ```
-CREATE TABLE comments(commentId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,text TEXT,ticketId INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId));
+CREATE TABLE comments(commentId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,text TEXT,ticketId INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId)) ON DELETE CASCADE;
 ```
 
 ## assignments table
 
 ```
-CREATE TABLE assignments(id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, ticketId INT,userId INT ,FOREIGN KEY(ticketId) REFERENCES tickets(ticketId), FOREIGN KEY(userId) REFERENCES users(userId));
+CREATE TABLE assignments(id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, ticketId INT,userId INT ,FOREIGN KEY(ticketId) REFERENCES tickets(ticketId) ON DELETE CASCADE, FOREIGN KEY(userId) REFERENCES users(userId)ON DELETE CASCADE);
 ```
 
 ## status_history table
 
 ```
-CREATE TABLE status_history(statusId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,ticketId INT,currentStatus VARCHAR(10),previousStatus VARCHAR(10),updatedBy INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId),FOREIGN KEY(updatedBy) REFERENCES users(userId));
+CREATE TABLE status_history(statusId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,ticketId INT,currentStatus VARCHAR(10),previousStatus VARCHAR(10),updatedBy INT, FOREIGN KEY(ticketId) REFERENCES tickets(ticketId) ON DELETE CASCADE,FOREIGN KEY(updatedBy) REFERENCES users(userId)ON DELETE CASCADE);
 ```
