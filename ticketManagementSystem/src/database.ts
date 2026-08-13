@@ -4,21 +4,10 @@ import { Client, DatabaseError, Pool } from "pg";
 dotenv.config();
 const client = new Client();
 const pool = new Pool();
-// {
-// user: process.env.PGUSER,
-// password: process.env.PGPASSWORD,
-// host: process.env.PGHOST,
-// port: Number(process.env.PGPORT),
-// database: process.env.PGDATABASE,
-// }
 
 pool.on("connect", (client) => {
     client.query("SET search_path TO support_ticket,public");
 });
-
-// await client.connect();
-
-// await client.query("SET search_path TO support_ticket");
 
 export type Ticket = {
     id: number;
@@ -57,7 +46,6 @@ export async function list() {
     try {
         const result = await pool.query("SELECT * FROM tickets");
         const tickets = result.rows;
-        // console.log(tickets);
 
         return tickets;
     } catch (error) {
@@ -76,7 +64,6 @@ export async function view(id: number) {
         const result = await pool.query(query);
         const ticket = result.rows[0];
         if (ticket === undefined) return false;
-        // console.log(ticket);
 
         return ticket;
     } catch (error) {
@@ -97,7 +84,6 @@ export async function updateStatus(
         };
         const result = await pool.query(query);
         const ticket = result.rows[0];
-        // console.log(ticket);
 
         if (ticket === undefined) return false;
 
@@ -117,7 +103,6 @@ export async function assign(ticketId: number, userId: number) {
         };
         const result = await pool.query(query);
         const returnValue = result.rows[0];
-        console.log(returnValue);
 
         return returnValue;
     } catch (error) {
@@ -135,7 +120,6 @@ export async function deleteTicket(id: number) {
         };
         const result = await pool.query(query);
         const ticket = result.rows[0];
-        // console.log(ticket);
         if (ticket === undefined) return false;
 
         return ticket;
