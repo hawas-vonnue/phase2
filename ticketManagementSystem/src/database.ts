@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-import { Client, DatabaseError } from "pg";
+import { Client, DatabaseError, Pool } from "pg";
 
 dotenv.config();
 const client = new Client();
+const pool = new Pool();
 // {
 // user: process.env.PGUSER,
 // password: process.env.PGPASSWORD,
@@ -10,11 +11,14 @@ const client = new Client();
 // port: Number(process.env.PGPORT),
 // database: process.env.PGDATABASE,
 // }
-await client.connect();
 
-await client.query("SET search_path TO support_ticket");
+pool.on("connect", (client) => {
+    client.query("SET search_path TO support_ticket,public");
+});
 
-// console.log(await client.query("SELECT * from tickets"));
+// await client.connect();
+
+// await client.query("SET search_path TO support_ticket");
 
 export type Ticket = {
     id: number;
@@ -36,11 +40,11 @@ export async function createTicket(ticket: ticketInput) {
                 ticket.description,
                 ticket.priority,
                 "Pending",
-                ticket.categoryId,
                 ticket.customerId,
+                ticket.categoryId,
             ],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const returnTicket = result.rows[0];
 
         return returnTicket;
@@ -51,7 +55,7 @@ export async function createTicket(ticket: ticketInput) {
 
 export async function list() {
     try {
-        const result = await client.query("SELECT * FROM tickets");
+        const result = await pool.query("SELECT * FROM tickets");
         const tickets = result.rows;
         // console.log(tickets);
 
@@ -69,7 +73,7 @@ export async function view(id: number) {
             text: "SELECT * FROM tickets where ticketId = $1",
             values: [id],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const ticket = result.rows[0];
         if (ticket === undefined) return false;
         // console.log(ticket);
@@ -91,7 +95,7 @@ export async function updateStatus(
             text: "UPDATE tickets set status = $1 WHERE ticketId = $2 RETURNING *",
             values: [newStatus, id],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const ticket = result.rows[0];
         // console.log(ticket);
 
@@ -111,7 +115,7 @@ export async function assign(ticketId: number, userId: number) {
             text: "INSERT INTO assignments(ticketId,userId) VALUES($1,$2) RETURNING *",
             values: [ticketId, userId],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const returnValue = result.rows[0];
         console.log(returnValue);
 
@@ -129,7 +133,7 @@ export async function deleteTicket(id: number) {
             text: "DELETE FROM tickets WHERE ticketId = $1 RETURNING *",
             values: [id],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const ticket = result.rows[0];
         // console.log(ticket);
         if (ticket === undefined) return false;
@@ -151,7 +155,7 @@ export async function createCustomer(customer: {
             text: "INSERT INTO customers(name,email) VALUES($1,$2) RETURNING *",
             values: [customer.name, customer.email],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const newCustomer = result.rows[0];
 
         return newCustomer;
@@ -167,7 +171,7 @@ export async function createUser(user: { name: string; email: string }) {
             values: [user.name, user.email],
         };
 
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const newUser = result.rows[0];
 
         return newUser;
@@ -182,7 +186,7 @@ export async function createCategory(categoryName: string) {
             text: "INSERT INTO categories(category) VALUES($1) RETURNING *",
             values: [categoryName],
         };
-        const result = await client.query(query);
+        const result = await pool.query(query);
         const category = result.rows[0];
 
         return category;
