@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["support_ticket"]
+}
+
+model assignments {
+  id       Int      @id @default(autoincrement())
+  ticketid Int?
+  userid   Int?
+  tickets  tickets? @relation(fields: [ticketid], references: [ticketid], onDelete: Cascade, onUpdate: NoAction)
+  users    users?   @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("support_ticket")
+}
+
+model categories {
+  categoryid Int       @id @default(autoincrement())
+  category   String    @db.VarChar(36)
+  tickets    tickets[]
+
+  @@schema("support_ticket")
+}
+
+model comments {
+  commentid Int      @id @default(autoincrement())
+  text      String?
+  ticketid  Int?
+  tickets   tickets? @relation(fields: [ticketid], references: [ticketid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("support_ticket")
+}
+
+model customers {
+  customerid Int       @id @default(autoincrement())
+  name       String    @db.VarChar(36)
+  email      String    @unique @db.VarChar(36)
+  tickets    tickets[]
+
+  @@schema("support_ticket")
+}
+
+model status_history {
+  statusid       Int      @id @default(autoincrement())
+  ticketid       Int?
+  currentstatus  String?  @db.VarChar(10)
+  previousstatus String?  @db.VarChar(10)
+  updatedby      Int?
+  tickets        tickets? @relation(fields: [ticketid], references: [ticketid], onDelete: Cascade, onUpdate: NoAction)
+  users          users?   @relation(fields: [updatedby], references: [userid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("support_ticket")
+}
+
+model tickets {
+  ticketid       Int              @id @default(autoincrement())
+  title          String?          @db.VarChar(36)
+  description    String?
+  priority       String?          @db.VarChar(10)
+  status         String?          @db.VarChar(10)
+  customerid     Int
+  categoryid     Int
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  assignments    assignments[]
+  comments       comments[]
+  status_history status_history[]
+  categories     categories       @relation(fields: [categoryid], references: [categoryid], onDelete: NoAction, onUpdate: NoAction)
+  customers      customers        @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("support_ticket")
+}
+
+model users {
+  userid         Int              @id @default(autoincrement())
+  name           String?          @db.VarChar(36)
+  email          String           @unique @db.VarChar(36)
+  assignments    assignments[]
+  status_history status_history[]
+
+  @@schema("support_ticket")
+}

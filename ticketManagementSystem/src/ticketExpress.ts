@@ -1,4 +1,5 @@
 import express, { type Request, type Response, NextFunction } from "express";
+// for file based
 // import {
 //     createTicket,
 //     list,
@@ -8,6 +9,20 @@ import express, { type Request, type Response, NextFunction } from "express";
 //     deleteTicket,
 // } from "./fileManaging.js";
 
+// for db based
+// import {
+//     createTicket,
+//     list,
+//     view,
+//     updateStatus,
+//     assign,
+//     deleteTicket,
+//     createCustomer,
+//     createUser,
+//     createCategory,
+// } from "./database.js";
+
+//for prisma based
 import {
     createTicket,
     list,
@@ -18,7 +33,7 @@ import {
     createCustomer,
     createUser,
     createCategory,
-} from "./database.js";
+} from "./prismaData.js";
 
 import {
     isValidCustomerInput,
