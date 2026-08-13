@@ -1,5 +1,7 @@
 # API Reference
 
+## For file based API
+
 | Method | Route                 | Description                                | Body                                                                   |
 | ------ | --------------------- | ------------------------------------------ | ---------------------------------------------------------------------- |
 | GET    | `/tickets`            | To get All Tickets as an array             | N/A                                                                    |
@@ -8,6 +10,17 @@
 | PATCH  | `/tickets/status/:id` | To update status of a ticket with given id | {newStatus:"Completed" or "Pending"}                                   |
 | PATCH  | `/tickets/assign/:id` | To add assignee to a ticket with given id  | {assignee:string}                                                      |
 | DELETE | `/tickets/:id`        | To delete ticket with given id             | N/A                                                                    |
+
+## For DB based API
+
+| Method | Route                 | Description                                | Body                                                                                                         |
+| ------ | --------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| GET    | `/tickets`            | To get All Tickets as an array             | N/A                                                                                                          |
+| GET    | `/tickets/:id`        | To get ticket with a given id              | N/A                                                                                                          |
+| POST   | `/tickets`            | To create a ticket                         | {title:string,description:string,priority:"High" or "Medium" or "Low","categoryId":number,customerId:number} |
+| PATCH  | `/tickets/status/:id` | To update status of a ticket with given id | {newStatus:"Completed" or "Pending"}                                                                         |
+| PATCH  | `/tickets/assign/:id` | To add assignee to a ticket with given id  | {assignee:number}                                                                                            |
+| DELETE | `/tickets/:id`        | To delete ticket with given id             | N/A                                                                                                          |
 
 ## Response status codes
 

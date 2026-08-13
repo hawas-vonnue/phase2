@@ -1,4 +1,13 @@
 import express, { type Request, type Response, NextFunction } from "express";
+// import {
+//     createTicket,
+//     list,
+//     view,
+//     updateStatus,
+//     assign,
+//     deleteTicket,
+// } from "./fileManaging.js";
+
 import {
     createTicket,
     list,
@@ -6,7 +15,16 @@ import {
     updateStatus,
     assign,
     deleteTicket,
-} from "./fileManaging.js";
+    createCustomer,
+    createUser,
+    createCategory,
+} from "./database.js";
+
+import {
+    isValidCustomerInput,
+    isValidTaskInput,
+    isValidUserInput,
+} from "./utils.js";
 
 const app = express();
 
@@ -20,26 +38,16 @@ app.patch("/tickets/status/:id", updateStatusHandler);
 app.patch("/tickets/assign/:id", assignHandler);
 app.delete("/tickets/:id", deleteHandler);
 
+//additional handlers for db
+app.post("/customers/create", createCustomerHandler);
+app.post("/users/create", createUserHandler);
+app.post("/categories/create", createCategoriesHandler);
+
 //common handlers
 app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(8080);
-
-function isValidTaskInput(req: Request) {
-    if (
-        "title" in req.body &&
-        "description" in req.body &&
-        "priority" in req.body &&
-        typeof req.body.title === "string" &&
-        typeof req.body.description === "string" &&
-        (req.body.priority === "High" ||
-            req.body.priority === "Low" ||
-            req.body.priority === "Medium")
-    )
-        return true;
-    else false;
-}
 
 async function createHandler(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
@@ -47,8 +55,7 @@ async function createHandler(req: Request, res: Response, next: NextFunction) {
         const ticket = await createTicket(body);
         if (ticket === false) {
             next("Creating ticket failed");
-        }
-        res.status(200).json({ status: "Success", ticket });
+        } else res.status(200).json({ status: "Success", ticket });
     } else {
         //bad request
         res.status(400).send("Bad request");
@@ -67,16 +74,14 @@ async function listHandler(req: Request, res: Response, next: NextFunction) {
     //         res.status(200).json("No Tickets")
     //     }
     // }
-
-    res.status(200).json(tickets);
+    else res.status(200).json(tickets);
 }
 
 async function viewHandler(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
     const ticket = await view(id);
     if (ticket === false) next();
-
-    res.status(200).json(ticket);
+    else res.status(200).json(ticket);
 }
 
 async function updateStatusHandler(
@@ -88,34 +93,74 @@ async function updateStatusHandler(
     if ("newStatus" in req.body && typeof req.body.newStatus === "string") {
         const ticket = await updateStatus(id, req.body.newStatus);
         if (ticket === false) next();
-
-        res.status(200).json({ status: "Success", ticket });
+        else res.status(200).json({ status: "Success", ticket });
     } else {
         res.status(400).send("Bad Request");
     }
 }
 
+// uncomment to use this for file management
+// async function assignHandler(req: Request, res: Response, next: NextFunction) {
+//     const id = Number(req.params.id);
+//     if ("assignee" in req.body && typeof req.body.assignee === "string") {
+//         const ticket = await assign(id, req.body.assignee);
+//         if (ticket === false) next();
+
+//         res.status(200).json({ status: "Success", ticket });
+//     } else res.status(400).send("Bad Request");
+// }
+
+// use this for database based - assignee is the userId so it is number
 async function assignHandler(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
-    if ("assignee" in req.body && typeof req.body.assignee === "string") {
+    if ("assignee" in req.body && typeof req.body.assignee === "number") {
         const ticket = await assign(id, req.body.assignee);
         if (ticket === false) next();
-
-        res.status(200).json({ status: "Success", ticket });
+        else res.status(200).json({ status: "Success", ticket });
     } else res.status(400).send("Bad Request");
 }
 
 async function deleteHandler(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
     const ticket = await deleteTicket(id);
-    console.log(ticket);
+    // console.log(ticket);
     if (ticket === false) {
-        console.log("inside");
         next();
     } else {
-        console.log("inside else");
-        res.send(200).json({ status: "Success", ticket });
+        res.status(200).json({ status: "Success", ticket });
     }
+}
+
+async function createCustomerHandler(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (isValidCustomerInput(req)) {
+        const customer = await createCustomer(req.body);
+
+        res.status(200).json({ status: "Success", customer });
+    } else res.status(400).send("Bad Request");
+}
+
+async function createUserHandler(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (isValidUserInput(req)) {
+        const user = await createUser(req.body);
+
+        res.status(200).json({ status: "Success", user });
+    } else res.status(400).send("Bad Request");
+}
+
+async function createCategoriesHandler(req: Request, res: Response) {
+    if ("category" in req.body && typeof req.body.category === "string") {
+        const category = await createCategory(req.body.category);
+
+        res.status(200).json({ status: "Success", category });
+    } else res.status(400).send("Bad Request");
 }
 
 function notFoundHandler(req: Request, res: Response, next: NextFunction) {
@@ -129,5 +174,6 @@ function errorHandler(
     next: NextFunction
 ) {
     console.log(err);
+
     res.status(500).send(`${err}.Internal server error`);
 }
