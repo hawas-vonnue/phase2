@@ -80,7 +80,7 @@ export async function updateStatus(
 
 export async function assign(ticketId: number, userId: number) {
     try {
-        const returnValue = prisma.assignments.create({
+        const returnValue = await prisma.assignments.create({
             data: { ticketid: ticketId, userid: userId },
         });
 
@@ -94,7 +94,7 @@ export async function assign(ticketId: number, userId: number) {
 
 export async function deleteTicket(id: number) {
     try {
-        const ticket = prisma.tickets.delete({ where: { ticketid: id } });
+        const ticket = await prisma.tickets.delete({ where: { ticketid: id } });
 
         if (ticket === null) return false;
 
@@ -111,7 +111,7 @@ export async function createCustomer(customer: {
     email: string;
 }) {
     try {
-        const newCustomer = prisma.customers.create({
+        const newCustomer = await prisma.customers.create({
             data: { name: customer.name, email: customer.email },
         });
 
@@ -123,7 +123,7 @@ export async function createCustomer(customer: {
 
 export async function createUser(user: { name: string; email: string }) {
     try {
-        const newUser = prisma.users.create({
+        const newUser = await prisma.users.create({
             data: { name: user.name, email: user.email },
         });
 
@@ -135,7 +135,7 @@ export async function createUser(user: { name: string; email: string }) {
 
 export async function createCategory(categoryName: string) {
     try {
-        const category = prisma.categories.create({
+        const category = await prisma.categories.create({
             data: { category: categoryName },
         });
 
@@ -143,6 +143,28 @@ export async function createCategory(categoryName: string) {
     } catch (error) {
         throw new Error("Error in creating category");
     }
+}
+
+export async function filterGET(
+    whereClause: Object,
+    page: number,
+    pageSize: number,
+    sortField: string,
+    sortDirection: "asc" | "desc"
+) {
+    const tickets = await prisma.tickets.findMany({
+        where: whereClause,
+        orderBy: { [sortField]: sortDirection },
+        take: pageSize,
+        skip: (page - 1) * pageSize,
+        include: { assignments: true },
+    });
+
+    const count = await prisma.tickets.count({
+        where: whereClause,
+    });
+
+    return { count, tickets };
 }
 
 //-------------------------Test----------------------------
