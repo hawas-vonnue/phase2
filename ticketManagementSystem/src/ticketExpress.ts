@@ -58,11 +58,12 @@ app.get("/tickets", enhanchedGetHandler);
 
 app.get("/tickets/:id", viewHandler);
 
-//patch for file managed and post for db and prisma
-// app.patch("/tickets/status/:id", updateStatusHandler);
-app.post("/tickets/status/:id", updateStatusHandler);
+app.patch("/tickets/status/:id", updateStatusHandler);
 
-app.patch("/tickets/assign/:id", assignHandler);
+//patch for file managed and post for db and prisma
+// app.patch("/tickets/assign/:id", assignHandler);
+app.post("/tickets/assign/:id", assignHandler);
+
 app.delete("/tickets/:id", deleteHandler);
 
 //additional handlers for db

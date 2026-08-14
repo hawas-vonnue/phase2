@@ -1,6 +1,6 @@
 import { prisma } from "./lib/prisma.js";
 
-async function seedDB() {
+export async function seedDB() {
     await prisma.categories.createMany({
         data: [{ category: "category 1" }, { category: "Category 2" }],
     });
