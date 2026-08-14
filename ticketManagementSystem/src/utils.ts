@@ -57,3 +57,75 @@ export function isValidUserInput(req: Request) {
         return true;
     else return false;
 }
+
+function isValidField(sortField: string) {
+    if (!sortField) return false;
+    const sortableFields = [
+        "ticketid",
+        "title",
+        "priority",
+        "status",
+        "customerid",
+        "categoryid",
+        "created_at",
+    ];
+    if (sortableFields.includes(sortField)) return true;
+    else return false;
+}
+
+function isValidPriority(priority: any) {
+    //no prioriy mentioned
+    if (!priority) return true;
+
+    const priorities = ["High", "Medium", "Low"];
+
+    priority = String(priority);
+    if (priorities.includes(priority)) return true;
+    else false;
+}
+
+function isValidStatus(status: any) {
+    // no status mentioned is valid input
+    if (!status) return true;
+
+    const statuses = ["pending", "completed"];
+
+    status = String(status);
+    if (statuses.includes(status)) return true;
+    else return false;
+}
+
+export function isValidQueryParameters(sortField: string, req: Request) {
+    if (
+        isValidField(sortField) &&
+        isValidPriority(req.query.priority) &&
+        isValidStatus(req.query.status)
+    ) {
+        return true;
+    }
+
+    return false;
+}
+
+export function createWhereClause(req: Request) {
+    const whereClause: {
+        status?: string;
+        priority?: string;
+        assignments?: object;
+        title?: object;
+    } = {};
+
+    if (req.query.status) whereClause.status = String(req.query.status);
+    if (req.query.priority) whereClause.priority = String(req.query.priority);
+    if (req.query.assignee)
+        whereClause.assignments = {
+            some: { userid: Number(req.query.assignee) },
+        };
+    if (req.query.search)
+        whereClause.title = {
+            contains: String(req.query.search),
+            mode: "insensitive",
+        };
+
+    return whereClause;
+}

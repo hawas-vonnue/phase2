@@ -33,12 +33,15 @@ import {
     createCustomer,
     createUser,
     createCategory,
+    filterGET,
 } from "./prismaData.js";
 
 import {
     isValidCustomerInput,
     isValidTaskInput,
     isValidUserInput,
+    isValidQueryParameters,
+    createWhereClause,
 } from "./utils.js";
 
 const app = express();
@@ -47,9 +50,18 @@ const app = express();
 app.use(express.json());
 
 app.post("/tickets/create", createHandler);
-app.get("/tickets", listHandler);
+
+// app.get("/tickets", listHandler);
+
+//enhanced get tickets
+app.get("/tickets", enhanchedGetHandler);
+
 app.get("/tickets/:id", viewHandler);
-app.patch("/tickets/status/:id", updateStatusHandler);
+
+//patch for file managed and post for db and prisma
+// app.patch("/tickets/status/:id", updateStatusHandler);
+app.post("/tickets/status/:id", updateStatusHandler);
+
 app.patch("/tickets/assign/:id", assignHandler);
 app.delete("/tickets/:id", deleteHandler);
 
@@ -138,7 +150,6 @@ async function assignHandler(req: Request, res: Response, next: NextFunction) {
 async function deleteHandler(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
     const ticket = await deleteTicket(id);
-    // console.log(ticket);
     if (ticket === false) {
         next();
     } else {
@@ -176,6 +187,54 @@ async function createCategoriesHandler(req: Request, res: Response) {
 
         res.status(200).json({ status: "Success", category });
     } else res.status(400).send("Bad Request");
+}
+
+async function enhanchedGetHandler(req: Request, res: Response) {
+    const maxPageSize = 100;
+
+    const page = Number(req.query.page) || 1;
+    let pageSize = Number(req.query.pageSize) || 10;
+    let sortField: string;
+
+    if (req.query.sortField) sortField = String(req.query.sortField);
+    else sortField = "ticketid";
+
+    const sortDirectionRecieved = String(req.query.sortDirection);
+    let sortDirection: "asc" | "desc";
+
+    if (
+        !(sortDirectionRecieved === "asc" || sortDirectionRecieved === "desc")
+    ) {
+        //apply default sortDirection
+        sortDirection = "asc";
+    } else sortDirection = sortDirectionRecieved;
+
+    if (!isValidQueryParameters(sortField, req))
+        res.status(400).send("Bad Request");
+    else {
+        const whereClause = createWhereClause(req);
+
+        if (pageSize > maxPageSize) pageSize = maxPageSize;
+
+        const result = await filterGET(
+            whereClause,
+            page,
+            pageSize,
+            sortField,
+            sortDirection
+        );
+        const response = {
+            pageMetadata: {
+                count: result.count,
+                page,
+                pageSize,
+                totalPages: Math.ceil(result.count / pageSize),
+            },
+            result: result.tickets,
+        };
+
+        res.status(200).json(response);
+    }
 }
 
 function notFoundHandler(req: Request, res: Response, next: NextFunction) {

@@ -145,6 +145,28 @@ export async function createCategory(categoryName: string) {
     }
 }
 
+export async function filterGET(
+    whereClause: Object,
+    page: number,
+    pageSize: number,
+    sortField: string,
+    sortDirection: "asc" | "desc"
+) {
+    const tickets = await prisma.tickets.findMany({
+        where: whereClause,
+        orderBy: { [sortField]: sortDirection },
+        take: pageSize,
+        skip: (page - 1) * pageSize,
+        include: { assignments: true },
+    });
+
+    const count = await prisma.tickets.count({
+        where: whereClause,
+    });
+
+    return { count, tickets };
+}
+
 //-------------------------Test----------------------------
 
 // await createTicket({
