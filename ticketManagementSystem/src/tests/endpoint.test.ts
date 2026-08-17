@@ -1,5 +1,5 @@
 import request from "supertest";
-import { Ticket } from "../fileManaging";
+import { Ticket } from "../fileManaging.js";
 
 const baseUrl = "http://localhost:8080";
 
