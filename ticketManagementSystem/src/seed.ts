@@ -176,6 +176,5 @@ export async function seedDB() {
 }
 
 if (process.env.NODE_ENV !== "test") {
-    console.log("hello");
     await seedDB();
 }

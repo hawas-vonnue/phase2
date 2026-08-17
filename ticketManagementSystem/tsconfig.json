@@ -2,7 +2,10 @@
     "compilerOptions": {
         "strict": true,
         "target": "ES2022",
-        "module": "es2022",
+        // "module": "es2022",
+        "module": "NodeNext", // Change from es2022 to NodeNext
+        "moduleResolution": "NodeNext",
+        "isolatedModules": true,
         "outDir": "dist",
         "rootDir": "src",
         "experimentalDecorators": true,

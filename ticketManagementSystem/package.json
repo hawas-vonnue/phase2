@@ -1,7 +1,8 @@
 {
     "scripts": {
         "build": "tsc",
-        "start": "npm run build -- -w"
+        "start": "npm run build -- -w",
+        "test": "NODE_OPTIONS=--experimental-vm-modules npx dotenv -e .env jest"
     },
     "devDependencies": {
         "@types/express": "^5.0.6",
