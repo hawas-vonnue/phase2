@@ -175,4 +175,6 @@ export async function seedDB() {
     await prisma.$disconnect();
 }
 
-await seedDB();
+if (process.env.NODE_ENV !== "test") {
+    await seedDB();
+}

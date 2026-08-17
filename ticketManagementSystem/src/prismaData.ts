@@ -1,4 +1,4 @@
-import { prisma } from "./lib/prisma";
+import { prisma } from "./lib/prisma.js";
 
 export type Ticket = {
     id: number;
@@ -170,7 +170,7 @@ export async function filterGET(
 //-------------------------Test----------------------------
 
 // await createTicket({
-//     title: "title of new",
+//     title: "title of new one",
 //     description: "description of new",
 //     priority: "High",
 //     categoryId: 1,
