@@ -12,6 +12,7 @@ export default {
     testEnvironment: "node",
     // preset: "ts-jest",
     preset: "ts-jest/presets/default-esm",
+    // setupFiles: ["dotenv/config"],
     // setupFiles: ["dotenv/config?path=./.env"],
     // setupFiles: ["<rootDir>/jest-setup.js"],
     transform: {

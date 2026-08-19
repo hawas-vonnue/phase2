@@ -1,4 +1,5 @@
 import { prisma } from "./lib/prisma.js";
+import { customerOrUser } from "./types.js";
 
 export type Ticket = {
     id: number;
@@ -109,26 +110,42 @@ export async function deleteTicket(id: number) {
 export async function createCustomer(customer: {
     name: string;
     email: string;
+    password: string;
 }) {
     try {
         const newCustomer = await prisma.customers.create({
-            data: { name: customer.name, email: customer.email },
+            data: {
+                name: customer.name,
+                email: customer.email,
+                password: customer.password,
+            },
         });
 
         return newCustomer;
     } catch (error) {
+        console.log(error);
         throw new Error("error in creating customer");
     }
 }
 
-export async function createUser(user: { name: string; email: string }) {
+export async function createUser(user: {
+    name: string;
+    email: string;
+    password: string;
+}) {
     try {
         const newUser = await prisma.users.create({
-            data: { name: user.name, email: user.email },
+            data: {
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                role: "USER",
+            },
         });
 
         return newUser;
     } catch (error) {
+        console.log(error);
         throw new Error("Error in creating user");
     }
 }
@@ -165,6 +182,53 @@ export async function filterGET(
     });
 
     return { count, tickets };
+}
+
+export async function getPassword(type: "user" | "customer", email: string) {
+    let user;
+    let mapped;
+    if (type === "user") {
+        user = await prisma.users.findUnique({
+            where: { email: email },
+        });
+        if (user) mapped = map({ ...user, type: type });
+    } else {
+        user = await prisma.customers.findUnique({
+            where: { email: email },
+        });
+        if (user) mapped = map({ ...user, type: type });
+    }
+
+    if (!user) return user;
+
+    return mapped;
+}
+
+export function map(person: customerOrUser) {
+    if (person.type === "customer")
+        return {
+            id: person.customerid,
+            name: person.name,
+            email: person.email,
+            type: person.type,
+            password: person.password,
+        };
+    else {
+        return {
+            id: person.userid,
+            name: person.name,
+            email: person.email,
+            role: person.role,
+            type: person.type,
+            password: person.password,
+        };
+    }
+}
+
+export async function findUser(id: number) {
+    const user = await prisma.users.findUnique({ where: { userid: id } });
+
+    return user;
 }
 
 //-------------------------Test----------------------------
