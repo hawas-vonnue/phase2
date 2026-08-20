@@ -3,6 +3,7 @@ export interface AuthenticatedUser {
     name: string;
     email: string;
     role: string;
+    type: "user" | "customer";
 }
 
 // export interface User {
@@ -12,6 +13,17 @@ export interface AuthenticatedUser {
 //     password: string;
 //     role: string;
 // }
+
+export interface Ticket {
+    ticketid: number;
+    categoryid: number;
+    created_at: Date | null;
+    customerid: number;
+    description: string | null;
+    priority: string | null;
+    status: string | null;
+    title: string | null;
+}
 
 interface baseUser {
     name: string;

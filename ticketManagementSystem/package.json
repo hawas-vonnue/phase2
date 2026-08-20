@@ -2,7 +2,8 @@
     "scripts": {
         "build": "tsc",
         "start": "npm run build -- -w",
-        "test": "jest"
+        "test": "jest",
+        "init": "psql mydb -f init.sql && npx tsx src/seed.ts"
     },
     "devDependencies": {
         "@types/bcrypt": "^6.0.0",

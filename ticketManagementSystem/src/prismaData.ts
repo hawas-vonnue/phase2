@@ -1,5 +1,5 @@
 import { prisma } from "./lib/prisma.js";
-import { customerOrUser } from "./types.js";
+import { AuthenticatedUser, customerOrUser } from "./types.js";
 
 export type Ticket = {
     id: number;
@@ -32,9 +32,32 @@ export async function createTicket(ticket: ticketInput) {
     }
 }
 
-export async function list() {
+export async function list(user: AuthenticatedUser) {
     try {
-        const tickets = await prisma.tickets.findMany();
+        let tickets;
+        if (user.type === "customer")
+            tickets = await prisma.tickets.findMany({
+                where: { customerid: user.id },
+            });
+        else {
+            if (user.role === "agent")
+                tickets = await prisma.tickets.findMany({
+                    include: {
+                        assignments: true,
+                    },
+                    where: {
+                        assignments: {
+                            some: {
+                                userid: user.id,
+                            },
+                        },
+                    },
+                });
+            //user role admin
+            else {
+                tickets = await prisma.tickets.findMany();
+            }
+        }
 
         return tickets;
     } catch (error) {
@@ -229,6 +252,16 @@ export async function findUser(id: number) {
     const user = await prisma.users.findUnique({ where: { userid: id } });
 
     return user;
+}
+
+export async function getAssignedIds(id: number) {
+    const userIds = await prisma.assignments.findMany({
+        select: {
+            userid: true,
+        },
+        where: { ticketid: id },
+    });
+    return userIds;
 }
 
 //-------------------------Test----------------------------

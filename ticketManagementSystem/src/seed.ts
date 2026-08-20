@@ -1,14 +1,24 @@
 import { prisma } from "./lib/prisma.js";
+import bcrypt from "bcrypt";
 
 export async function seedDB() {
+    const password = await bcrypt.hash("default", 10);
     await prisma.categories.createMany({
         data: [{ category: "category 1" }, { category: "Category 2" }],
     });
 
     await prisma.customers.createMany({
         data: [
-            { name: "customer 1", email: "email1@gmail.com" },
-            { name: "customer 2", email: "email2@gmail.com" },
+            {
+                name: "customer 1",
+                email: "customer1@gmail.com",
+                password: password,
+            },
+            {
+                name: "customer 2",
+                email: "customer2@gmail.com",
+                password: password,
+            },
         ],
     });
 
@@ -131,9 +141,24 @@ export async function seedDB() {
 
     await prisma.users.createMany({
         data: [
-            { name: "user 1", email: "user1@gmail.com" },
-            { name: "user 2", email: "user2@gmail.com" },
-            { name: "user 3", email: "user3@gmail.com" },
+            {
+                name: "agent 1",
+                email: "user1@gmail.com",
+                password: password,
+                role: "agent",
+            },
+            {
+                name: "agent 2",
+                email: "user2@gmail.com",
+                password: password,
+                role: "agent",
+            },
+            {
+                name: "admin",
+                email: "admin@gmail.com",
+                password: password,
+                role: "admin",
+            },
         ],
     });
 
