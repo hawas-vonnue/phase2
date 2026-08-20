@@ -1,6 +1,8 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs"
+  importFileExtension = "ts"
 }
 
 datasource db {
@@ -39,6 +41,7 @@ model customers {
   customerid Int       @id @default(autoincrement())
   name       String    @db.VarChar(36)
   email      String    @unique @db.VarChar(36)
+  password   String
   tickets    tickets[]
 
   @@schema("support_ticket")
@@ -76,8 +79,10 @@ model tickets {
 
 model users {
   userid         Int              @id @default(autoincrement())
-  name           String?          @db.VarChar(36)
+  name           String          @db.VarChar(36)
   email          String           @unique @db.VarChar(36)
+  password       String           
+  role           String
   assignments    assignments[]
   status_history status_history[]
 

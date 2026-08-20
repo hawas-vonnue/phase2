@@ -1,4 +1,7 @@
 import { type Request } from "express";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 // for file based
 // function isValidTaskInput(req: Request) {
@@ -51,8 +54,10 @@ export function isValidUserInput(req: Request) {
     if (
         "name" in req.body &&
         "email" in req.body &&
+        "password" in req.body &&
         typeof req.body.name === "string" &&
-        typeof req.body.email === "string"
+        typeof req.body.email === "string" &&
+        typeof req.body.password === "string"
     )
         return true;
     else return false;
@@ -128,4 +133,36 @@ export function createWhereClause(req: Request) {
         };
 
     return whereClause;
+}
+
+export function createJwtToken(user: {
+    id: number;
+    name: string;
+    email: string;
+    type: string;
+    role?: string;
+}) {
+    const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
+    const JWT_EXPIRY: number = Number(process.env.JWT_EXPIRTY) || 60 * 60;
+
+    console.log(JWT_SECRET);
+    const token = jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+
+    return token;
+}
+
+export function mapToUser(user: {
+    id: number;
+    name: string;
+    email: string;
+    type: string;
+    role?: string;
+}) {
+    return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        type: user.type,
+    };
 }
