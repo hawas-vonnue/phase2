@@ -1,6 +1,8 @@
 import { type Request } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { AuthenticatedUser, Ticket } from "./types.js";
+import { getAssignedIds } from "./prismaData.js";
 dotenv.config();
 
 // for file based
@@ -118,8 +120,11 @@ export function createWhereClause(req: Request) {
         priority?: string;
         assignments?: object;
         title?: object;
+        customerid?: number;
     } = {};
 
+    const user = req.user;
+    if (user!.type === "customer") whereClause.customerid = user?.id;
     if (req.query.status) whereClause.status = String(req.query.status);
     if (req.query.priority) whereClause.priority = String(req.query.priority);
     if (req.query.assignee)
@@ -130,6 +135,11 @@ export function createWhereClause(req: Request) {
         whereClause.title = {
             contains: String(req.query.search),
             mode: "insensitive",
+        };
+
+    if (user!.type === "user" && user!.role === "agent")
+        whereClause.assignments = {
+            some: { userid: Number(user!.id) },
         };
 
     return whereClause;
@@ -165,4 +175,43 @@ export function mapToUser(user: {
         role: user.role,
         type: user.type,
     };
+}
+
+export async function canView(user: AuthenticatedUser, ticket: Ticket | false) {
+    if (ticket === false) return;
+
+    if (user.type === "customer")
+        return user.id === ticket.customerid ? true : false;
+    if (user.role === "admin") return true;
+    const assigned = await getAssignedIds(ticket.ticketid);
+    for (let assignedId of assigned) {
+        if (assignedId.userid === user.id) return true;
+    }
+
+    return false;
+}
+
+export function canCreateTicket(user: AuthenticatedUser) {
+    if (user.type === "customer") return true;
+    return false;
+}
+
+export async function canUpdate(
+    user: AuthenticatedUser,
+    ticket: Ticket | false
+) {
+    if (ticket === false) return;
+
+    if (user.type === "customer") return false;
+    if (user.role === "admin") return true;
+    const assigned = await getAssignedIds(ticket.ticketid);
+    for (let assignedId of assigned) {
+        if (assignedId.userid === user.id) return true;
+    }
+    return false;
+}
+
+export function isAdmin(user: AuthenticatedUser) {
+    if (user.type === "user" && user.role === "admin") return true;
+    return false;
 }

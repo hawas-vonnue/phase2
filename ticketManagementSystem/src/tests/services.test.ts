@@ -9,7 +9,7 @@ import {
 } from "../prismaData.js";
 
 // run this file using
-//NODE_OPTIONS="--experimental-vm-modules" npx dotenv -e .env jest tests/services.test.ts
+//NODE_OPTIONS="--experimental-vm-modules" npx jest tests/services.test.ts
 
 afterAll(() => {
     prisma.$disconnect();
@@ -44,7 +44,13 @@ test("test list", async () => {
         categoryId: 1,
     });
     if (ticket !== false) {
-        const result = await list();
+        const result = await list({
+            id: 1,
+            name: "Test",
+            email: "test@gmail.com",
+            type: "user",
+            role: "admin",
+        });
         expect(result).toContainEqual(ticket);
     }
 });

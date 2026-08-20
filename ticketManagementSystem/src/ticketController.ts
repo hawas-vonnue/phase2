@@ -46,8 +46,11 @@ import {
     isValidQueryParameters,
     createWhereClause,
     createJwtToken,
+    canView,
+    canCreateTicket,
+    canUpdate,
+    isAdmin,
 } from "./utils.js";
-import { emit } from "node:cluster";
 
 export async function createHandler(
     req: Request,
@@ -56,6 +59,12 @@ export async function createHandler(
 ) {
     const body = req.body;
     if (isValidTaskInput(req)) {
+        if (!req.user) return res.status(403).send("Forbidden");
+
+        // if only customer can add tickets uncomment this lines
+        // const createTicketAccess = canCreateTicket(req.user);
+        // if (!createTicketAccess) return res.status(403).send("Forbidden");
+
         const ticket = await createTicket(body);
         if (ticket === false) {
             next("Creating ticket failed");
@@ -71,7 +80,8 @@ export async function listHandler(
     res: Response,
     next: NextFunction
 ) {
-    const tickets = await list();
+    if (!req.user) return res.status(403).send("Forbidden");
+    const tickets = await list(req.user);
     if (tickets === false) {
         next("Couldnt read from file");
     }
@@ -90,10 +100,20 @@ export async function viewHandler(
     res: Response,
     next: NextFunction
 ) {
+    if (!req.user) return res.status(403).send("Forbidden");
+
     const id = Number(req.params.id);
+
     const ticket = await view(id);
+    const viewAccess = await canView(req.user, ticket);
+
+    if (viewAccess === false) {
+        return res.status(403).send("Forbidden");
+    }
     if (ticket === false) next();
-    else res.status(200).json(ticket);
+    else {
+        res.status(200).json(ticket);
+    }
 }
 
 export async function updateStatusHandler(
@@ -101,9 +121,16 @@ export async function updateStatusHandler(
     res: Response,
     next: NextFunction
 ) {
+    if (!req.user) return res.status(403).send("Forbidden");
+
     const id = Number(req.params.id);
     if ("newStatus" in req.body && typeof req.body.newStatus === "string") {
         const ticket = await updateStatus(id, req.body.newStatus);
+
+        const updateStatusAccess = await canUpdate(req.user, ticket);
+        if (updateStatusAccess === false)
+            return res.status(403).send("Forbidden");
+
         if (ticket === false) next();
         else res.status(200).json({ status: "Success", ticket });
     } else {
@@ -128,6 +155,11 @@ export async function assignHandler(
     res: Response,
     next: NextFunction
 ) {
+    if (!req.user) return res.status(403).send("Forbidden");
+
+    const assignAccess = isAdmin(req.user);
+    if (!assignAccess) return res.status(403).send("Forbidden");
+
     const id = Number(req.params.id);
     if ("assignee" in req.body && typeof req.body.assignee === "number") {
         const ticket = await assign(id, req.body.assignee);
@@ -142,6 +174,12 @@ export async function deleteHandler(
     next: NextFunction
 ) {
     const id = Number(req.params.id);
+
+    if (!req.user) return res.status(403).send("Forbidden");
+
+    const deleteAccess = isAdmin(req.user);
+    if (!deleteAccess) return res.status(403).send("Forbidden");
+
     const ticket = await deleteTicket(id);
     if (ticket === false) {
         next();
@@ -179,6 +217,11 @@ export async function createUserHandler(
     res: Response,
     next: NextFunction
 ) {
+    if (!req.user) return res.status(403).send("Forbidden");
+
+    const createUserAccess = isAdmin(req.user);
+    if (!createUserAccess) return res.status(403).send("Forbidden");
+
     if (isValidUserInput(req)) {
         const password = await bcrypt.hash(req.body.password, 10);
         const user = await createUser({
@@ -195,6 +238,11 @@ export async function createUserHandler(
 }
 
 export async function createCategoriesHandler(req: Request, res: Response) {
+    if (!req.user) return res.status(403).send("Forbidden");
+
+    const createCategoryAccess = isAdmin(req.user);
+    if (createCategoryAccess) return res.status(403).send("Forbidden");
+
     if ("category" in req.body && typeof req.body.category === "string") {
         const category = await createCategory(req.body.category);
 
@@ -203,6 +251,7 @@ export async function createCategoriesHandler(req: Request, res: Response) {
 }
 
 export async function enhanchedGetHandler(req: Request, res: Response) {
+    if (!req.user) return res.status(403).send("forbidden");
     const maxPageSize = 100;
 
     const page = Number(req.query.page) || 1;
