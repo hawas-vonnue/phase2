@@ -103,6 +103,7 @@ export async function viewHandler(
     if (!req.user) return res.status(403).send("Forbidden");
 
     const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).send("Bad request");
 
     const ticket = await view(id);
     const viewAccess = await canView(req.user, ticket);
@@ -124,6 +125,8 @@ export async function updateStatusHandler(
     if (!req.user) return res.status(403).send("Forbidden");
 
     const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).send("Bad request");
+
     if ("newStatus" in req.body && typeof req.body.newStatus === "string") {
         const ticket = await updateStatus(id, req.body.newStatus);
 
@@ -161,6 +164,10 @@ export async function assignHandler(
     if (!assignAccess) return res.status(403).send("Forbidden");
 
     const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).send("Bad request");
+
+    if (Number.isNaN(id)) return res.status(400).send("Bad request");
+
     if ("assignee" in req.body && typeof req.body.assignee === "number") {
         const ticket = await assign(id, req.body.assignee);
         if (ticket === false) next();
@@ -174,6 +181,7 @@ export async function deleteHandler(
     next: NextFunction
 ) {
     const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).send("Bad request");
 
     if (!req.user) return res.status(403).send("Forbidden");
 
@@ -254,14 +262,14 @@ export async function enhanchedGetHandler(req: Request, res: Response) {
     if (!req.user) return res.status(403).send("forbidden");
     const maxPageSize = 100;
 
-    const page = Number(req.query.page) || 1;
-    let pageSize = Number(req.query.pageSize) || 10;
+    const page = Number(req.sanitizedQuery.page) || 1;
+    let pageSize = Number(req.sanitizedQuery.pageSize) || 10;
     let sortField: string;
 
-    if (req.query.sortField) sortField = String(req.query.sortField);
+    if (req.sanitizedQuery.sortField) sortField = String(req.query.sortField);
     else sortField = "ticketid";
 
-    const sortDirectionRecieved = String(req.query.sortDirection);
+    const sortDirectionRecieved = String(req.sanitizedQuery.sortDirection);
     let sortDirection: "asc" | "desc";
 
     if (
@@ -356,4 +364,13 @@ export function errorHandler(
     console.log(err);
 
     res.status(500).send(`${err}.Internal server error`);
+}
+
+export function largeSizeHandler(
+    error: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    return res.status(413).send("Size limit exceeded");
 }
