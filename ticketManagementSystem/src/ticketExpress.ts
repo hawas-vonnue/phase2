@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express, { Request, NextFunction } from "express";
 import {
     notFoundHandler,
@@ -14,10 +16,21 @@ import qs from "qs";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import cors from "cors";
+import { randomUUID } from "node:crypto";
+
+// import debugModule from "debug";
+import logger from "./logger.js";
+
+import swaggerUi from "swagger-ui-express";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const swaggerDocument = require("../swagger.json");
+
 declare global {
     namespace Express {
         interface Request {
             sanitizedQuery: qs.ParsedQs;
+            requestId: string;
         }
     }
 }
@@ -31,14 +44,41 @@ const loginLimiter = rateLimit({
     limit: 10,
 });
 
+// const debug = debugModule("ticketSupport:server");
+
 const app = express();
+
+//ui docs
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(cors());
 app.use(helmet());
 
 //to parse as json
 app.use(express.json({ limit: "1kb" }), largeSizeHandler);
 
+//middleware for request id
 app.use((req, res, next) => {
+    req.requestId = randomUUID();
+    next();
+});
+
+app.use((req, res, next) => {
+    res.on("finish", () => {
+        logger.info("HTTP Request processed", {
+            requestId: req.requestId,
+            method: req.method,
+            url: req.originalUrl,
+            status: res.statusCode,
+        });
+    });
+    next();
+});
+
+app.use((req, res, next) => {
+    //log ip of the user
+    // debug(`${req.requestId}:handling request from ${req.ip}`);
+
     const queryCopy = qs.parse(qs.stringify(req.query));
     const dummyReq = { query: queryCopy } as Request;
 
@@ -46,6 +86,10 @@ app.use((req, res, next) => {
         req.sanitizedQuery = dummyReq.query;
         next();
     });
+});
+
+app.get("/health", (req, res, next) => {
+    res.status(200).send("Ok");
 });
 
 app.post("/login", loginLimiter, loginHandler);

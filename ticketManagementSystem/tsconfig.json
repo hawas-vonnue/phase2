@@ -7,9 +7,10 @@
         "moduleResolution": "NodeNext",
         "isolatedModules": true,
         "outDir": "dist",
-        "rootDir": "src",
+        "rootDirs": ["src", "generated/"],
         "experimentalDecorators": true,
         "types": ["node", "jest"],
         "esModuleInterop": true
-    }
+    },
+    "exclude": ["prisma.config.ts", "generated/*"]
 }

@@ -1,5 +1,6 @@
 import express, { type Request, type Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import logger from "./logger.js";
 
 // for file based
 // import {
@@ -66,9 +67,10 @@ export async function createHandler(
         // if (!createTicketAccess) return res.status(403).send("Forbidden");
 
         const ticket = await createTicket(body);
-        if (ticket === false) {
-            next("Creating ticket failed");
-        } else res.status(200).json({ status: "Success", ticket });
+        // if (ticket === false) {
+        // next("Creating ticket failed");
+        // }
+        res.status(200).json({ status: "Success", ticket });
     } else {
         //bad request
         res.status(400).send("Bad request");
@@ -82,9 +84,9 @@ export async function listHandler(
 ) {
     if (!req.user) return res.status(403).send("Forbidden");
     const tickets = await list(req.user);
-    if (tickets === false) {
-        next("Couldnt read from file");
-    }
+    // if (tickets === false) {
+    //     next("Couldnt read from file");
+    // }
 
     //if no tickets string is needed
     //  else {
@@ -92,7 +94,7 @@ export async function listHandler(
     //         res.status(200).json("No Tickets")
     //     }
     // }
-    else res.status(200).json(tickets);
+    res.status(200).json(tickets);
 }
 
 export async function viewHandler(
@@ -166,12 +168,10 @@ export async function assignHandler(
     const id = Number(req.params.id);
     if (Number.isNaN(id)) return res.status(400).send("Bad request");
 
-    if (Number.isNaN(id)) return res.status(400).send("Bad request");
-
     if ("assignee" in req.body && typeof req.body.assignee === "number") {
         const ticket = await assign(id, req.body.assignee);
-        if (ticket === false) next();
-        else res.status(200).json({ status: "Success", ticket });
+        // if (ticket === false) next();
+        res.status(200).json({ status: "Success", ticket });
     } else res.status(400).send("Bad Request");
 }
 
@@ -249,7 +249,7 @@ export async function createCategoriesHandler(req: Request, res: Response) {
     if (!req.user) return res.status(403).send("Forbidden");
 
     const createCategoryAccess = isAdmin(req.user);
-    if (createCategoryAccess) return res.status(403).send("Forbidden");
+    if (!createCategoryAccess) return res.status(403).send("Forbidden");
 
     if ("category" in req.body && typeof req.body.category === "string") {
         const category = await createCategory(req.body.category);
@@ -361,9 +361,16 @@ export function errorHandler(
     res: Response,
     next: NextFunction
 ) {
-    console.log(err);
+    // console.log(err);
+    logger.error("Application request crashed", {
+        requestId: req.requestId,
+        url: req.url,
+        method: req.method,
+        message: err.message,
+        stack: err.stack,
+    });
 
-    res.status(500).send(`${err}.Internal server error`);
+    res.status(500).send(`Internal server error`);
 }
 
 export function largeSizeHandler(
