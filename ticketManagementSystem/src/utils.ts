@@ -155,7 +155,6 @@ export function createJwtToken(user: {
     const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
     const JWT_EXPIRY: number = Number(process.env.JWT_EXPIRTY) || 60 * 60;
 
-    console.log(JWT_SECRET);
     const token = jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRY });
 
     return token;

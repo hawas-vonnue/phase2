@@ -27,8 +27,9 @@ export async function createTicket(ticket: ticketInput) {
 
         return returnTicket;
     } catch (error) {
-        console.log(error);
-        return false;
+        // console.log(error);
+        throw error;
+        // return false;
     }
 }
 
@@ -61,9 +62,10 @@ export async function list(user: AuthenticatedUser) {
 
         return tickets;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        throw error;
 
-        return false;
+        // return false;
     }
 }
 
@@ -110,9 +112,10 @@ export async function assign(ticketId: number, userId: number) {
 
         return returnValue;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        throw error;
 
-        return false;
+        // return false;
     }
 }
 
@@ -124,9 +127,10 @@ export async function deleteTicket(id: number) {
 
         return ticket;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        throw error;
 
-        return false;
+        // return false;
     }
 }
 
@@ -146,7 +150,7 @@ export async function createCustomer(customer: {
 
         return newCustomer;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw new Error("error in creating customer");
     }
 }
