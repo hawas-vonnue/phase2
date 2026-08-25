@@ -1,0 +1,12 @@
+.tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgb(61, 61, 255);
+    color: white;
+}
+.tag img {
+    width: 20px;
+    height: 20px;
+}
