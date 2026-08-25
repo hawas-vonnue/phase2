@@ -1,0 +1,31 @@
+.sideLink {
+    padding: 10px;
+    height: 70px;
+    display: flex;
+    border: solid 1px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.sideLink img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 4px;
+}
+
+.sideLink span {
+    margin-right: auto;
+}
+
+@media screen and (width<=425px) {
+    .sideLink span {
+        display: none;
+    }
+    .sideLink {
+        padding: 0px;
+    }
+    .sideLink img {
+        width: 20px;
+        height: 20px;
+    }
+}

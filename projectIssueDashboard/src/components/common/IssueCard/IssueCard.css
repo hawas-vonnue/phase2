@@ -1,0 +1,20 @@
+.issueCard {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    border: solid 1px white;
+    padding: 8px;
+    gap: 4px;
+    border-radius: 10px;
+}
+
+.issueCard .firstColumn {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (width<=425px) {
+    .issueCard {
+        width: 220px;
+    }
+}

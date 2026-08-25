@@ -1,0 +1,14 @@
+.sideBarContainer {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+}
+
+@media screen and (width <=425px) {
+    .sideBarContainer {
+        width: 40px;
+    }
+}

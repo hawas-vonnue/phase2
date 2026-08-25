@@ -1,0 +1,44 @@
+.projectCard {
+    display: flex;
+    width: 700px;
+    flex-direction: column;
+    border: solid 1px white;
+    border-radius: 10px;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.projectCard .firstColumn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.projectCard .titleContainer {
+    display: flex;
+    flex-direction: column;
+}
+.projectCard .title {
+    font-size: 24px;
+}
+
+.projectCard .idContainer {
+    align-self: flex-start;
+    font-size: 14px;
+}
+
+@media screen and (width<=768px) {
+    .projectCard {
+        width: 400px;
+    }
+}
+
+@media screen and (width<=425px) {
+    .projectCard {
+        width: 220px;
+    }
+
+    .projectCard .title {
+        font-size: 18px;
+    }
+}
