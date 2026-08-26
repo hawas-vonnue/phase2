@@ -7,7 +7,14 @@
     font-size: 16px;
     display: flex;
     justify-content: center;
+    border-color: rgb(136, 136, 255);
+    color: rgb(136, 136, 255);
     align-items: center;
+}
+
+.badge.completed {
+    border-color: rgb(2, 255, 200);
+    color: rgb(2, 255, 200);
 }
 
 @media screen and (width<=425px) {

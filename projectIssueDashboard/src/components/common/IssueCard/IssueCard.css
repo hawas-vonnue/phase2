@@ -6,11 +6,48 @@
     padding: 8px;
     gap: 4px;
     border-radius: 10px;
+    justify-content: space-between;
 }
 
 .issueCard .firstColumn {
     display: flex;
     justify-content: space-between;
+    padding: 4px;
+}
+
+.issueCard .tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .issueCard.active {
+    background-color: rgb(120, 138, 120);
+    color: black;
+} */
+
+.issueCard.completed {
+    border-color: rgb(2, 255, 200);
+}
+
+.issueCard .tags span {
+    padding: 5px;
+    border: solid 0.5px white;
+    border-radius: 12px;
+    font-size: 14px;
+    min-width: 40px;
+}
+
+.issueCard .dateContainer {
+    align-self: flex-start;
+    padding-left: 4px;
+    color: rgb(83, 83, 83);
+}
+
+.issueCard .tags .overdue {
+    color: red;
+    border-color: red;
 }
 
 @media screen and (width<=425px) {
