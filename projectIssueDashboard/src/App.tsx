@@ -1,11 +1,46 @@
 import "./App.css";
+import EmptyState from "./components/common/EmptyState";
 import IssueCard from "./components/common/IssueCard";
 import ProjectCard from "./components/common/ProjectCard";
 import Header from "./components/Layout/Header";
 import SideBar from "./components/Layout/SideBar";
-// import EmptyState from "./components/common/EmptyState";
+import { issues } from "./utils/issueCardList";
+import { projects } from "./utils/projectLists";
+
+function isOverdue(date: string) {
+    const currentDate = new Date();
+    // only compares date not time
+    currentDate.setHours(0, 0, 0, 0);
+    const lastDate = new Date(date);
+    const isPast = +lastDate - +currentDate < 0;
+
+    return isPast;
+}
 
 function App() {
+    const issueCards = issues.map((issue) => (
+        <IssueCard
+            key={issue.id}
+            date={issue.date}
+            id={issue.id}
+            text={issue.text}
+            tag={issue.tag}
+            status={issue.status}
+            priority={issue.priority}
+            overdue={isOverdue(issue.date)}
+        ></IssueCard>
+    ));
+
+    const projectCards = projects.map((project) => (
+        <ProjectCard
+            key={project.id}
+            id={project.id}
+            text={project.text}
+            name={project.name}
+            status={project.status}
+        />
+    ));
+
     return (
         <>
             <Header url="https://picsum.photos/id/101/200/300"></Header>
@@ -14,286 +49,19 @@ function App() {
                 <div className="mainContent">
                     <h2>Projects</h2>
                     <div className="projects">
-                        <ProjectCard
-                            name="First project"
-                            id={4}
-                            text="This is the description of first project"
-                            status="Pending"
-                        ></ProjectCard>
-                        <ProjectCard
-                            name="First project"
-                            id={4}
-                            text="This is the description of first project"
-                            status="Pending"
-                        ></ProjectCard>
-                        <ProjectCard
-                            name="First project"
-                            id={4}
-                            text="This is the description of first project"
-                            status="Pending"
-                        ></ProjectCard>
+                        {projectCards.length === 0 ? (
+                            <EmptyState></EmptyState>
+                        ) : (
+                            projectCards
+                        )}
                     </div>
-                    {/* <EmptyState></EmptyState> */}
                     <h2>ISSUES</h2>
                     <div className="issues">
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
-                        <IssueCard
-                            id={1}
-                            status="Pending"
-                            text="Fix the issue with the allignments in the project"
-                            tag="Security"
-                        ></IssueCard>
+                        {issueCards.length === 0 ? (
+                            <EmptyState></EmptyState>
+                        ) : (
+                            issueCards
+                        )}
                     </div>
                 </div>
             </main>
