@@ -1,0 +1,26 @@
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttonContainer button {
+    padding: 5px;
+    border: solid 1px;
+    border-radius: 5px;
+    background: none;
+    align-self: flex-end;
+    margin-right: 80px;
+}
+
+@media screen and (width<=375px) {
+    .buttonContainer button {
+        margin-right: 60px;
+    }
+}
+
+@media screen and (width<=325px) {
+    .buttonContainer button {
+        margin-right: 25px;
+    }
+}

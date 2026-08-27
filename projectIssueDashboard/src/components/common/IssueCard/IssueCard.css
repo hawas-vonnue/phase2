@@ -17,6 +17,10 @@
 
 .issueCard .tags {
     display: flex;
+}
+
+.issueCard .tags {
+    display: flex;
     gap: 8px;
     justify-content: center;
     align-items: center;
@@ -53,5 +57,9 @@
 @media screen and (width<=425px) {
     .issueCard {
         width: 220px;
+    }
+
+    .issueCard .tags span {
+        font-size: 10px;
     }
 }
