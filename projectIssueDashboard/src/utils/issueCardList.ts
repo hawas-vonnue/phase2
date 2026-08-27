@@ -1,13 +1,6 @@
-interface issue {
-    id: number;
-    date: string;
-    status: string;
-    priority: string;
-    text: string;
-    tag: string;
-}
+import { type Issue } from "../types/issues";
 
-export const issues: issue[] = [
+export const issues: Issue[] = [
     {
         id: 1,
         date: "12-02-2034",

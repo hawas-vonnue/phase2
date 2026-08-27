@@ -1,0 +1,82 @@
+.open {
+    display: flex !important;
+}
+
+.expand {
+    display: none;
+    flex-direction: column;
+}
+
+.filterCard,
+.sortCard {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 60px;
+    padding: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.filterContainer,
+.searchContainer,
+.sortContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+select {
+    height: 30px;
+    padding: 5px;
+    background: none;
+}
+
+::picker(select) {
+    color: black;
+}
+
+input {
+    background: none;
+    padding: 5px;
+    height: 15px;
+    border: solid 0.1px;
+}
+
+.menuContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-right: 80px;
+}
+
+.menuContainer button {
+    background: none;
+    border: solid 1px;
+}
+
+.menuContainer button img {
+    width: 30px;
+    height: 30px;
+}
+
+.clearButtonContainer {
+    margin-left: auto;
+    margin-right: 70px;
+}
+
+.clearButtonContainer button {
+    background: none;
+    padding: 5px;
+    border: solid 1px;
+}
+
+@media screen and (width<=325px) {
+    .menuContainer {
+        margin-right: 25px;
+    }
+
+    .clearButtonContainer {
+        margin-right: 25px;
+    }
+}
