@@ -7,8 +7,10 @@
     font-size: 16px;
     display: flex;
     justify-content: center;
-    border-color: rgb(136, 136, 255);
-    color: rgb(136, 136, 255);
+    /* border-color: rgb(136, 136, 255); */
+    /* color: rgb(136, 136, 255); */
+    color: var(--accent);
+    border-color: var(--accent-border);
     align-items: center;
 }
 

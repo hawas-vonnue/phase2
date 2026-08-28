@@ -120,15 +120,17 @@ function App() {
                         )}
                     </div>
                     <h2>ISSUES</h2>
-                    <CreateIssueButton></CreateIssueButton>
-                    <Filter
-                        filterValues={filterValues}
-                        isFilterOn={isFilterOn}
-                        updateFilterStatus={updateFilterStatus}
-                        updateFilterValues={updateFilterValues}
-                        updateSortValues={updateSortValues}
-                        sortValues={sortValues}
-                    ></Filter>
+                    <div className="accessories">
+                        <CreateIssueButton></CreateIssueButton>
+                        <Filter
+                            filterValues={filterValues}
+                            isFilterOn={isFilterOn}
+                            updateFilterStatus={updateFilterStatus}
+                            updateFilterValues={updateFilterValues}
+                            updateSortValues={updateSortValues}
+                            sortValues={sortValues}
+                        ></Filter>
+                    </div>
                     <div className="issues">
                         {issueCards.length === 0 ? (
                             <EmptyState></EmptyState>

@@ -25,9 +25,8 @@ export default function CreateIssueModal({
     const [errorObject, updateErrorObject] = useState<FormErrors | null>(null);
 
     function validate(formValue: IssueFormValues) {
-        console.log(formValue);
-
         const result = IssueFormValuesZod.safeParse(formValue);
+
         if (!result.success) {
             const tree = z.treeifyError(result.error);
             console.log(tree);
@@ -131,7 +130,10 @@ export default function CreateIssueModal({
     return (
         <div className="createIssueModal">
             <button className="closeButton" onClick={clickEventHandler}>
-                Close
+                <img
+                    src="https://img.icons8.com/?size=100&id=71200&format=png&color=ffffffff"
+                    alt="close button"
+                />
             </button>
             <form onSubmit={submit}>
                 <div className="field">

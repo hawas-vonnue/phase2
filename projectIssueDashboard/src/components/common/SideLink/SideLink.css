@@ -2,11 +2,16 @@
     padding: 10px;
     height: 70px;
     display: flex;
-    border: solid 1px;
+    border: solid 1px var(--border);
     justify-content: center;
     align-items: center;
     gap: 5px;
 }
+
+.sideLink:hover {
+    box-shadow: var(--shadow);
+}
+
 .sideLink img {
     width: 30px;
     height: 30px;

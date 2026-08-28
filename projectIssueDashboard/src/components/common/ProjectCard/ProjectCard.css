@@ -2,11 +2,23 @@
     display: flex;
     width: 700px;
     flex-direction: column;
-    border: solid 1px white;
+    border: solid 1px var(--accent-border);
     border-radius: 10px;
     justify-content: center;
     padding: 10px;
     gap: 10px;
+}
+
+.projectCard:hover {
+    box-shadow: var(--shadow);
+}
+
+.projectCard.completed {
+    border-color: rgb(2, 255, 200);
+}
+
+h2 {
+    text-align: center;
 }
 
 .projectCard .firstColumn {
