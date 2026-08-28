@@ -1,7 +1,7 @@
 .issueCard {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 450px;
     border: solid 1px white;
     padding: 8px;
     gap: 4px;
@@ -17,6 +17,16 @@
 
 .issueCard .tags {
     display: flex;
+}
+
+.issueCard .tags button {
+    background: none;
+    border: none;
+}
+
+.editContainer img {
+    width: 40px;
+    height: 40px;
 }
 
 .issueCard .tags {
@@ -52,6 +62,38 @@
 .issueCard .tags .overdue {
     color: red;
     border-color: red;
+}
+
+.issueCard .tagContainer {
+    display: flex;
+    /* gap: 10px; */
+    padding: 5px;
+    justify-content: space-around;
+}
+
+.issueCard .title {
+    font-size: 24px;
+}
+
+.container {
+    /* border-top: solid 1px;
+    border-bottom: solid 1px; */
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 3px;
+}
+
+.container div {
+    display: flex;
+    color: rgb(83, 83, 83);
+}
+
+.description {
+    border-top: solid 0.3px;
+    padding: 4px;
+    border-bottom: solid 0.3px;
+    margin: 3px;
 }
 
 @media screen and (width<=425px) {

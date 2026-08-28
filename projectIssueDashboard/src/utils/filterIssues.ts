@@ -12,7 +12,7 @@ export function filterIssues(
 
     if (filterValues.search !== "")
         filteredList = filteredList.filter((issue) =>
-            issue.text
+            issue.title
                 .toLocaleLowerCase()
                 .includes(filterValues.search.toLocaleLowerCase())
         );
