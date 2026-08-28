@@ -1,19 +1,18 @@
-.buttonContainer {
+/* .buttonContainer {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-}
+} */
 
-.buttonContainer button {
+button {
     padding: 5px;
-    border: solid 1px;
+    border: solid 1px var(--border);
     border-radius: 5px;
     background: none;
-    align-self: flex-end;
-    margin-right: 80px;
+    height: 40px;
 }
 
-@media screen and (width<=375px) {
+/* @media screen and (width<=375px) {
     .buttonContainer button {
         margin-right: 60px;
     }
@@ -23,4 +22,4 @@
     .buttonContainer button {
         margin-right: 25px;
     }
-}
+} */

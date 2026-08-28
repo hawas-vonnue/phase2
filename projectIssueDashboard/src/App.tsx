@@ -12,6 +12,7 @@ import { useState } from "react";
 import Filter from "./components/common/Filter";
 import { filterIssues } from "./utils/filterIssues";
 import { sortIssues } from "./utils/sortIssues";
+import type { FormValues } from "./types/issues";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -39,6 +40,24 @@ function App() {
         direction: "",
     });
 
+    const [editStatus, updateEditStatus] = useState({
+        isEdit: false,
+        id: -1,
+    });
+
+    const initialFormValue: FormValues = {
+        date: "",
+        status: "",
+        priority: "",
+        title: "",
+        description: "",
+        project: "",
+        assignee: "",
+        tags: "",
+    };
+
+    const [formValues, updateFormValues] = useState(initialFormValue);
+
     let filterdIssues;
     if (isFilterOn) {
         filterdIssues = filterIssues(issuesList, filterValues);
@@ -55,11 +74,16 @@ function App() {
             key={issue.id}
             date={issue.date}
             id={issue.id}
-            text={issue.text}
-            tag={issue.tag}
+            title={issue.title}
+            tags={issue.tags}
             status={issue.status}
             priority={issue.priority}
             overdue={isOverdue(issue.date)}
+            description={issue.description}
+            project={issue.project}
+            assignee={issue.assignee}
+            updateFormValues={updateFormValues}
+            updateEditStatus={updateEditStatus}
         ></IssueCard>
     ));
 
@@ -82,6 +106,10 @@ function App() {
                     <CreateIssueModal
                         updateIssuesList={updateIssuesList}
                         issuesList={issuesList}
+                        formValues={formValues}
+                        updateFormValues={updateFormValues}
+                        editStatus={editStatus}
+                        updateEditStatus={updateEditStatus}
                     ></CreateIssueModal>
                     <h2>Projects</h2>
                     <div className="projects">
@@ -92,15 +120,17 @@ function App() {
                         )}
                     </div>
                     <h2>ISSUES</h2>
-                    <CreateIssueButton></CreateIssueButton>
-                    <Filter
-                        filterValues={filterValues}
-                        isFilterOn={isFilterOn}
-                        updateFilterStatus={updateFilterStatus}
-                        updateFilterValues={updateFilterValues}
-                        updateSortValues={updateSortValues}
-                        sortValues={sortValues}
-                    ></Filter>
+                    <div className="accessories">
+                        <CreateIssueButton></CreateIssueButton>
+                        <Filter
+                            filterValues={filterValues}
+                            isFilterOn={isFilterOn}
+                            updateFilterStatus={updateFilterStatus}
+                            updateFilterValues={updateFilterValues}
+                            updateSortValues={updateSortValues}
+                            sortValues={sortValues}
+                        ></Filter>
+                    </div>
                     <div className="issues">
                         {issueCards.length === 0 ? (
                             <EmptyState></EmptyState>

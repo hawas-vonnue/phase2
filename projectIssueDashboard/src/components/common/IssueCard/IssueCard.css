@@ -1,12 +1,16 @@
 .issueCard {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    border: solid 1px white;
+    width: 450px;
+    border: solid 1px var(--accent-border);
     padding: 8px;
     gap: 4px;
     border-radius: 10px;
     justify-content: space-between;
+}
+
+.issueCard:hover {
+    box-shadow: var(--shadow);
 }
 
 .issueCard .firstColumn {
@@ -17,6 +21,16 @@
 
 .issueCard .tags {
     display: flex;
+}
+
+.issueCard .tags button {
+    background: none;
+    border: none;
+}
+
+.editContainer img {
+    width: 40px;
+    height: 40px;
 }
 
 .issueCard .tags {
@@ -35,18 +49,24 @@
     border-color: rgb(2, 255, 200);
 }
 
+.issueCard.completed .container {
+    color: rgb(2, 255, 200);
+}
+
 .issueCard .tags span {
     padding: 5px;
-    border: solid 0.5px white;
+    border: solid 0.5px var(--border);
     border-radius: 12px;
     font-size: 14px;
     min-width: 40px;
+    display: flex;
+    justify-content: center;
 }
 
 .issueCard .dateContainer {
     align-self: flex-start;
-    padding-left: 4px;
-    color: rgb(83, 83, 83);
+    /* padding-left: 4px; */
+    /* color: rgb(83, 83, 83); */
 }
 
 .issueCard .tags .overdue {
@@ -54,9 +74,59 @@
     border-color: red;
 }
 
+.issueCard .tagContainer {
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.issueCard .title {
+    font-size: 36px;
+    color: var(--text-h);
+    margin-bottom: 6px;
+}
+
+.container {
+    /* border-top: solid 1px;
+    border-bottom: solid 1px; */
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 3px;
+    color: var(--accent);
+}
+
+.container div {
+    display: flex;
+    /* color: rgb(83, 83, 83); */
+}
+
+.description {
+    border-top: solid 0.3px var(--border);
+    padding: 4px;
+    border-bottom: solid 0.3px var(--border);
+    margin: 3px;
+    flex-grow: 1;
+    text-align: left;
+}
+
 @media screen and (width<=425px) {
     .issueCard {
         width: 220px;
+    }
+
+    .issueCard .tags button svg,
+    .issueCard .tags span {
+        width: 20px;
+        height: 20px;
+    }
+
+    .issueCard .tags {
+        gap: 2px;
+        margin-left: 10px;
     }
 
     .issueCard .tags span {

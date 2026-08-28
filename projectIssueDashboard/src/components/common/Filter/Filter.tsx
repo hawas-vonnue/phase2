@@ -57,7 +57,7 @@ export default function Filter({
 
         updateSortValues({
             field: "",
-            direction: "",
+            direction: "asc",
         });
     }
 
@@ -152,6 +152,7 @@ export default function Filter({
                             <option value="id">Id</option>
                             <option value="priority">Priority</option>
                             <option value="date">Date</option>
+                            <option value="status">Status</option>
                         </select>
                     </div>
                     <div className="sortContainer">
@@ -165,7 +166,6 @@ export default function Filter({
                                 handleSortChange("direction", e.target.value);
                             }}
                         >
-                            <option value="">Select a direction to sort</option>
                             <option value="asc">ASC</option>
                             <option value="desc">DESC</option>
                         </select>

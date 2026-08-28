@@ -5,6 +5,7 @@ export function sortIssues(
     sortValues: { field: string; direction: string }
 ) {
     const priorities = ["Low", "Medium", "High"];
+    const statuses = ["active", "completed"];
 
     if (sortValues.field === "") return issues;
     let sortedIssues = issues;
@@ -36,6 +37,18 @@ export function sortIssues(
                     (a, b) =>
                         priorities.indexOf(a.priority) -
                         priorities.indexOf(b.priority)
+                );
+            break;
+        case "status":
+            if (sortValues.direction === "desc")
+                sortedIssues = issues.sort(
+                    (a, b) =>
+                        statuses.indexOf(b.status) - statuses.indexOf(a.status)
+                );
+            else
+                sortedIssues = issues.sort(
+                    (a, b) =>
+                        statuses.indexOf(a.status) - statuses.indexOf(b.status)
                 );
             break;
     }

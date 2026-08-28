@@ -13,7 +13,7 @@ export default function ProjectCard({
     status: string;
 }) {
     return (
-        <div className="projectCard">
+        <div className={`projectCard ${status}`}>
             <div className="firstColumn">
                 <div className="titleContainer">
                     <span className="title">{name}</span>

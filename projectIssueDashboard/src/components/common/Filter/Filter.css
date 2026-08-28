@@ -12,7 +12,6 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    margin-left: 60px;
     padding: 10px;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -29,30 +28,32 @@
 select {
     height: 30px;
     padding: 5px;
-    background: none;
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--text);
 }
 
 ::picker(select) {
-    color: black;
+    color: var(--text);
 }
 
 input {
     background: none;
     padding: 5px;
     height: 15px;
-    border: solid 0.1px;
+    border: solid 0.1px var(--border);
 }
 
 .menuContainer {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-    margin-right: 80px;
+    justify-content: center;
+    /* margin-top: 20px; */
+    /* margin-right: 80px; */
 }
 
 .menuContainer button {
     background: none;
-    border: solid 1px;
+    border: none;
 }
 
 .menuContainer button img {
@@ -62,19 +63,21 @@ input {
 
 .clearButtonContainer {
     margin-left: auto;
-    margin-right: 70px;
 }
 
 .clearButtonContainer button {
     background: none;
     padding: 5px;
-    border: solid 1px;
+    border: solid 1px var(--border);
+    border-radius: 8px;
+    min-width: 60px;
+    height: 30px;
 }
 
 @media screen and (width<=325px) {
-    .menuContainer {
+    /* .menuContainer {
         margin-right: 25px;
-    }
+    } */
 
     .clearButtonContainer {
         margin-right: 25px;

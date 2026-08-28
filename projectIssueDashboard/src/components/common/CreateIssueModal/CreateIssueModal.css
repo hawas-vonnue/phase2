@@ -1,25 +1,39 @@
 .createIssueModal {
     display: none;
     flex-direction: column;
-    width: calc(100% - 220px);
-    height: calc(100vh - 80px);
-    background-color: var(--bg);
+    width: calc(100% - 150px);
+    height: 100%;
+    background-color: var(--bg-opacity-low);
+    backdrop-filter: blur(10px);
+
     position: absolute;
-    top: 0;
-    justify-content: center;
+    left: 150px;
+    top: 0px;
+    /* justify-content: center; */
     align-items: center;
-    border: solid 1px;
 }
 
 .createIssueModal .closeButton {
     align-self: flex-end;
     margin-right: 40px;
+    margin-top: 40px;
     justify-self: flex-start;
     background: none;
     margin-bottom: 10px;
+    border: none;
+}
+
+.closeButton img {
+    width: 30px;
+    height: 30px;
+}
+
+.error {
+    color: red !important;
 }
 
 form {
+    margin-top: 15vh;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -33,14 +47,41 @@ form .field {
     gap: 10px;
 }
 
+form .tags {
+    flex-direction: column;
+}
+
+textarea {
+    background: none;
+    border: solid 1px;
+}
+
 @media screen and (width<=425px) {
     .createIssueModal {
-        width: calc(100% - 60px);
+        width: calc(100% - 45px);
+        left: 45px;
+    }
+
+    .createIssueModal .closeButton {
+        margin-right: 0px;
     }
 }
 
 @media screen and (width<=320px) {
     form {
-        padding: 5px;
+        width: 200px;
+    }
+
+    form .field {
+        flex-direction: column;
+    }
+
+    .createIssueModal {
+        width: calc(100% - 45px);
+        left: 45px;
+    }
+
+    .createIssueModal .closeButton {
+        margin-right: 10px;
     }
 }
