@@ -1,0 +1,103 @@
+.loginFormContainer {
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: solid 1px var(--border);
+    padding: 40px;
+    width: 400px;
+    height: 350px;
+    border-radius: 8px;
+
+    @media screen and (width<=425px) {
+        width: 300px;
+    }
+
+    @media screen and (width<=385px) {
+        width: 250px;
+    }
+
+    @media screen and (width<=325px) {
+        width: 200px;
+    }
+}
+
+.loginForm:hover {
+    box-shadow: var(--shadow);
+}
+
+.loginForm .field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: flex-start;
+}
+
+.field label {
+    text-align: left;
+    color: var(--text-h);
+}
+
+.field input {
+    background-color: var(--input-bg);
+    height: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.loginForm .formActions {
+    display: flex;
+    justify-content: space-between;
+
+    @media screen and (width<=425px) {
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 5px;
+
+        a {
+            text-align: left;
+        }
+    }
+}
+
+.formActions .rememberMe {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.loginForm a {
+    text-decoration: none;
+    color: var(--accent);
+}
+
+.loginForm button {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--accent);
+    color: var(--btn-text);
+    border-radius: 8px;
+}
+
+.loginForm button:hover {
+    background: var(--btn-hover);
+}
+
+.loginForm .footer {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+    @media screen and (width<=425px) {
+        flex-direction: column;
+    }
+}

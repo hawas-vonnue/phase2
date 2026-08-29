@@ -2,6 +2,7 @@ import "./IssueCard.css";
 import Badge from "../Badge";
 import Tag from "../Tag";
 import type { FormValues } from "../../../types/issues";
+import { useNavigate } from "react-router";
 
 export default function IssueCard({
     id,
@@ -34,8 +35,11 @@ export default function IssueCard({
         <Tag key={crypto.randomUUID()} text={tag}></Tag>
     ));
 
+    const navigate = useNavigate();
+
     function clickHandler(event: React.MouseEvent) {
         event.preventDefault();
+        event.stopPropagation();
         const formValue: FormValues = {
             status: status,
             title,
@@ -58,8 +62,14 @@ export default function IssueCard({
         window.scrollTo(0, 0);
     }
 
+    function viewIssue(event: React.MouseEvent) {
+        event.preventDefault();
+
+        navigate(`/issues/${id}`);
+    }
+
     return (
-        <div className={`issueCard ${status}`}>
+        <div className={`issueCard ${status}`} onClick={viewIssue}>
             <div className="firstColumn">
                 <span>#{id}</span>
                 <div className="tags">
@@ -69,10 +79,6 @@ export default function IssueCard({
                     <span>{priority}</span>
                     <Badge text={status}></Badge>
                     <button className="editContainer" onClick={clickHandler}>
-                        {/* <img
-                            src="https://img.icons8.com/?size=100&id=59770&format=png&color=ffffffff"
-                            alt="edit icon"
-                        /> */}
                         <svg
                             width="28"
                             height="28"

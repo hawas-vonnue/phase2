@@ -1,0 +1,131 @@
+.issuePage {
+    display: flex;
+    justify-content: center;
+}
+
+.issuePage .issueCard {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    min-height: 80vh;
+    border: solid 1px var(--accent-border);
+    padding: 8px;
+    gap: 4px;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.issuePage .issueCard:hover {
+    box-shadow: var(--shadow);
+}
+
+.issuePage .issueCard .firstColumn {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+}
+
+.issuePage .issueCard .tags {
+    display: flex;
+}
+
+.issuePage .issueCard .tags button {
+    background: none;
+    border: none;
+}
+
+.issuePage .editContainer img {
+    width: 40px;
+    height: 40px;
+}
+
+.issuePage .issueCard .tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.issuePage .issueCard.completed {
+    border-color: rgb(2, 255, 200);
+}
+
+.issuePage .issueCard.completed .container {
+    color: rgb(2, 255, 200);
+}
+
+.issuePage .issueCard .tags span {
+    padding: 5px;
+    border: solid 0.5px var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.issuePage .issueCard .dateContainer {
+    align-self: flex-start;
+}
+
+.issuePage .issueCard .tags .overdue {
+    color: red;
+    border-color: red;
+}
+
+.issuePage .issueCard .tagContainer {
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.issuePage .issueCard .title {
+    font-size: 36px;
+    color: var(--text-h);
+    margin-bottom: 6px;
+}
+
+.issuePage .container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 3px;
+    color: var(--accent);
+}
+
+.issuePage .container div {
+    display: flex;
+}
+
+.issuePage .description {
+    border-top: solid 0.3px var(--border);
+    padding: 4px;
+    border-bottom: solid 0.3px var(--border);
+    margin: 3px;
+    flex-grow: 1;
+    text-align: left;
+}
+
+@media screen and (width<=425px) {
+    .issuePage .issueCard {
+        width: 220px;
+    }
+
+    .issuePage .issueCard .tags button svg,
+    .issuePage .issueCard .tags span {
+        width: 20px;
+        height: 20px;
+    }
+
+    .issuePage .issueCard .tags {
+        gap: 2px;
+        margin-left: 10px;
+    }
+
+    .issuePage .issueCard .tags span {
+        font-size: 10px;
+    }
+}

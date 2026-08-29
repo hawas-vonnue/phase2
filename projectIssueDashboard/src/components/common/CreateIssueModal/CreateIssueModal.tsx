@@ -135,7 +135,7 @@ export default function CreateIssueModal({
                     alt="close button"
                 />
             </button>
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="createIssueForm">
                 <div className="field">
                     <label htmlFor="issue">Title:</label>
                     <input

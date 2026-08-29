@@ -1,11 +1,22 @@
 .sideLink {
-    padding: 10px;
     height: 70px;
     display: flex;
     border: solid 1px var(--border);
+}
+
+.sideLink a {
+    padding: 10px;
+    width: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.sideLink .active {
+    background-color: var(--accent-bg);
 }
 
 .sideLink:hover {
