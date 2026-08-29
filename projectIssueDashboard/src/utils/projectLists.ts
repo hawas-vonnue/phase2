@@ -5,7 +5,7 @@ interface project {
     status: string;
 }
 
-export const projects: project[] = [
+export const projectsSeedList: project[] = [
     {
         name: "First project",
         id: 4,

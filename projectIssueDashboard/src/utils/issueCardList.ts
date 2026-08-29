@@ -1,6 +1,6 @@
 import { type Issue } from "../types/issues";
 
-export const issues: Issue[] = [
+export const issuesSeedList: Issue[] = [
     {
         id: 1,
         date: "2024-12-31",

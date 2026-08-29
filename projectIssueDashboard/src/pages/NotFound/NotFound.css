@@ -1,0 +1,31 @@
+.notFound {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    margin-top: 60px;
+    align-items: center;
+}
+
+.notFound h1 {
+    font-size: 120px;
+    font-weight: 800;
+    letter-spacing: -4px;
+}
+
+.notFound h2 {
+    font-size: 40px;
+}
+
+.notFound span {
+    font-size: 24px;
+}
+
+.notFound a {
+    text-decoration: none;
+    width: 200px;
+    padding: 10px;
+    color: var(--text);
+    border: solid 1px var(--border);
+    margin-top: 10px;
+}

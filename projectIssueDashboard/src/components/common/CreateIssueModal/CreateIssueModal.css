@@ -32,7 +32,7 @@
     color: red !important;
 }
 
-form {
+.createIssueForm {
     margin-top: 15vh;
     padding: 20px;
     display: flex;
@@ -42,18 +42,22 @@ form {
     border: solid 1px white;
 }
 
-form .field {
+.createIssueForm .field {
     display: flex;
     gap: 10px;
 }
 
-form .tags {
+.createIssueForm .tags {
     flex-direction: column;
+}
+
+.createIssueForm select {
+    background: none;
 }
 
 textarea {
     background: none;
-    border: solid 1px;
+    border: solid 1px var(--border);
 }
 
 @media screen and (width<=425px) {
@@ -68,11 +72,11 @@ textarea {
 }
 
 @media screen and (width<=320px) {
-    form {
+    .createIssueForm {
         width: 200px;
     }
 
-    form .field {
+    .createIssueForm .field {
         flex-direction: column;
     }
 

@@ -18,8 +18,8 @@ export default function SideBar() {
                     url="https://img.icons8.com/?size=100&id=360&format=png&color=ffffffff"
                 ></SideLink>
                 <SideLink
-                    text="Settings"
-                    url="https://img.icons8.com/?size=100&id=364&format=png&color=ffffffff"
+                    text="Profile"
+                    url="https://img.icons8.com/?size=100&id=fUUEbUbXhzOA&format=png&color=ffffffff"
                 ></SideLink>
             </div>
         </div>
