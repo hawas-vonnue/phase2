@@ -96,6 +96,7 @@ export default function CreateIssueModal({
         if (newIssue === undefined) return;
         let list = structuredClone(issuesList);
         if (editStatus.isEdit) {
+            newIssue.id = editStatus.id;
             list = list.map((issue) => {
                 if (issue.id === editStatus.id) {
                     issue.assignee = newIssue.assignee;
@@ -112,6 +113,15 @@ export default function CreateIssueModal({
                 return issue;
             });
         } else list.push(newIssue);
+
+        //no need for await because issueList is changed.
+        fetch(`${import.meta.env.VITE_url}/issues/create`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newIssue),
+        });
 
         updateIssuesList(list);
         updateEditStatus({ isEdit: false, id: -1 });

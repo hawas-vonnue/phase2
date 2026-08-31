@@ -3,6 +3,7 @@ import "./Issue.css";
 import { type Issue } from "../../types/issues";
 import Badge from "../../components/common/Badge";
 import Tag from "../../components/common/Tag";
+import { useEffect, useState } from "react";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -14,13 +15,21 @@ function isOverdue(date: string) {
     return isPast;
 }
 
-export default function Issue({ issuesList }: { issuesList: Issue[] }) {
+export default function Issue() {
     const { id } = useParams();
     const idNumber = Number(id);
 
-    const issue = issuesList.find((issue) => issue.id === idNumber);
+    // const issue = issuesList.find((issue) => issue.id === idNumber);
+    const [issue, setIssue] = useState<Issue | null>(null);
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_url}/issues/${idNumber}`)
+            .then((response) => response.json())
+            .then((response) => setIssue(response))
+            .catch((error) => console.log(error));
+    }, [idNumber]);
 
     if (!issue) return;
+    if (issue === null) return;
 
     const status = issue.status;
     const title = issue.title;
