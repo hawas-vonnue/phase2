@@ -8,6 +8,8 @@ import { sortIssues } from "../../utils/sortIssues";
 import { useState } from "react";
 import CreateIssueModal from "../../components/common/CreateIssueModal";
 import IssueCard from "../../components/common/IssueCard";
+import Loading from "../../components/common/Loading";
+import Error from "../../components/common/Error";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -22,9 +24,15 @@ function isOverdue(date: string) {
 export default function Issues({
     issuesList,
     updateIssuesList,
+    spinner,
+    error,
+    loadIssues,
 }: {
     issuesList: Issue[];
     updateIssuesList: (newIssue: Issue[]) => void;
+    spinner: boolean;
+    error: boolean;
+    loadIssues: () => void;
 }) {
     const [isFilterOn, updateFilterStatus] = useState(false);
 
@@ -97,24 +105,32 @@ export default function Issues({
                 updateEditStatus={updateEditStatus}
             ></CreateIssueModal>
             <h2>ISSUES</h2>
-            <div className="accessories">
-                <CreateIssueButton></CreateIssueButton>
-                <Filter
-                    filterValues={filterValues}
-                    isFilterOn={isFilterOn}
-                    updateFilterStatus={updateFilterStatus}
-                    updateFilterValues={updateFilterValues}
-                    updateSortValues={updateSortValues}
-                    sortValues={sortValues}
-                ></Filter>
-            </div>
-            <div className="issues">
-                {issueCards.length === 0 ? (
-                    <EmptyState></EmptyState>
-                ) : (
-                    issueCards
-                )}
-            </div>
+            {spinner ? (
+                <Loading />
+            ) : error ? (
+                <Error loadFunction={loadIssues} />
+            ) : (
+                <>
+                    <div className="accessories">
+                        <CreateIssueButton></CreateIssueButton>
+                        <Filter
+                            filterValues={filterValues}
+                            isFilterOn={isFilterOn}
+                            updateFilterStatus={updateFilterStatus}
+                            updateFilterValues={updateFilterValues}
+                            updateSortValues={updateSortValues}
+                            sortValues={sortValues}
+                        ></Filter>
+                    </div>
+                    <div className="issues">
+                        {issueCards.length === 0 ? (
+                            <EmptyState></EmptyState>
+                        ) : (
+                            issueCards
+                        )}
+                    </div>
+                </>
+            )}
         </>
     );
 }

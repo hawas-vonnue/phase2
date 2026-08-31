@@ -1,0 +1,76 @@
+export interface Issue {
+    date: string;
+    status: string;
+    priority: string;
+    title: string;
+    description: string;
+    project: string;
+    assignee: string;
+    tags: string[];
+}
+
+export const issueList: Issue[] = [
+    {
+        date: "2024-12-31",
+        status: "active",
+        priority: "Low",
+        description:
+            "Description of issue 1. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur corrupti excepturi culpa nobis. Tenetur eum neque quae exercitationem quidem, consequuntur cumque voluptatibus aut saepe quibusdam asperiores consectetur? Itaque omnis consequuntur saepe nostrum quibusdam adipisci, exercitationem deleniti ipsam quis. Saepe, distinctio.",
+        tags: ["IT", "Security"],
+        title: "Title 1",
+        project: "Project 1",
+        assignee: "User 1",
+    },
+    {
+        date: "2004-12-31",
+        status: "completed",
+        priority: "High",
+        description:
+            "Description of issue 2. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur corrupti excepturi culpa nobis. Tenetur eum neque quae exercitationem quidem, consequuntur cumque voluptatibus aut saepe quibusdam asperiores consectetur? Itaque omnis consequuntur saepe nostrum quibusdam adipisci, exercitationem deleniti ipsam quis. Saepe, distinctio.",
+        tags: ["IT", "Security", "Development"],
+        title: "Title 2",
+        project: "Project 2",
+        assignee: "User 2",
+    },
+    {
+        date: "2004-12-30",
+        status: "completed",
+        priority: "Medium",
+        description:
+            "Description of issue 3. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur corrupti excepturi culpa nobis. Tenetur eum neque quae exercitationem quidem, consequuntur cumque voluptatibus aut saepe quibusdam asperiores consectetur? Itaque omnis consequuntur saepe nostrum quibusdam adipisci, exercitationem deleniti ipsam quis. Saepe, distinctio.",
+        tags: ["IT"],
+        title: "Title 3",
+        project: "Project 3",
+        assignee: "User 3",
+    },
+    {
+        date: "2026-02-31",
+        status: "completed",
+        priority: "High",
+        description: "Description of issue 4",
+        tags: ["IT", "Security"],
+        title: "Title 4",
+        project: "Project 4",
+        assignee: "User 4",
+    },
+    {
+        date: "2036-02-31",
+        status: "active",
+        priority: "Low",
+        description: "Description of issue 5",
+        tags: ["IT", "Security"],
+        title: "Title 5",
+        project: "Project 5",
+        assignee: "User 5",
+    },
+    {
+        date: "2016-02-11",
+        status: "completed",
+        priority: "Medium",
+        description: "Description of issue 6",
+        tags: ["IT", "Security"],
+        title: "Title 6",
+        project: "Project 6",
+        assignee: "User 6",
+    },
+];
