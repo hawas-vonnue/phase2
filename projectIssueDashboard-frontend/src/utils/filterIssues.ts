@@ -1,5 +1,11 @@
 import { type Issue } from "../types/issues";
 
+function search(filteredList: Issue[], searchTerm: string) {
+    return filteredList.filter((issue) =>
+        issue.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
+}
+
 export function filterIssues(
     issuesList: Issue[],
     filterValues: {
@@ -10,12 +16,9 @@ export function filterIssues(
 ) {
     let filteredList: Issue[] = structuredClone(issuesList);
 
-    if (filterValues.search !== "")
-        filteredList = filteredList.filter((issue) =>
-            issue.title
-                .toLocaleLowerCase()
-                .includes(filterValues.search.toLocaleLowerCase())
-        );
+    if (filterValues.search !== "") {
+        filteredList = search(filteredList, filterValues.search);
+    }
     if (filterValues.status !== "") {
         filteredList = filteredList.filter(
             (issue) => issue.status === filterValues.status

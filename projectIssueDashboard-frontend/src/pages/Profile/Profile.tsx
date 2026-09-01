@@ -1,5 +1,6 @@
 import "./Profile.css";
 import Avatar from "../../components/common/Avatar";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 // interface ProfileData {
 //     fullName: string;
@@ -21,6 +22,8 @@ export default function Profile({
     bio: string;
     url: string;
 }) {
+    useDocumentTitle("Profile");
+
     return (
         <div className="profileParent">
             <div className="profile">
