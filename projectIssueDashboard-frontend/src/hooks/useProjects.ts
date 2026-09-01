@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface Project {
     id: number;
@@ -7,48 +7,66 @@ interface Project {
     status: string;
 }
 
-export function useProjects() {
-    const [projectList, updateProjectList] = useState<Project[]>([]);
-    const [spinner, setSpinner] = useState(true);
-    const [error, setError] = useState(false);
+interface ProjectState {
+    list: Project[];
+    spinner: boolean;
+    error: boolean;
+}
 
-    function fetchData() {
+export function useProjects() {
+    const [projectState, setProjectState] = useState<ProjectState>({
+        list: [],
+        error: false,
+        spinner: true,
+    });
+
+    const fetchData = useCallback(() => {
         let isMounted = true;
 
         fetch(`${import.meta.env.VITE_url}/projects`)
             .then((response) => {
-                if (!response.ok) setError(true);
+                if (!response.ok)
+                    setProjectState((prevState) => ({
+                        ...prevState,
+                        error: true,
+                    }));
 
                 return response.json();
             })
             .then((response) => {
                 if (isMounted) {
-                    updateProjectList(response);
-                    setSpinner(false);
+                    setProjectState((prevState) => ({
+                        ...prevState,
+                        list: response,
+                        spinner: false,
+                    }));
                 }
             })
             .catch((error) => {
                 console.log(error);
                 if (isMounted) {
-                    setSpinner(false);
-                    setError(true);
+                    setProjectState((prevState) => ({
+                        ...prevState,
+                        spinner: false,
+                        error: true,
+                    }));
                 }
             });
 
         return () => {
             isMounted = false;
         };
-    }
+    }, []);
 
     const loadProjects = () => {
-        setSpinner(true);
-        setError(false);
+        setProjectState({ ...projectState, spinner: true, error: false });
+
         fetchData();
     };
 
     useEffect(() => {
         return fetchData();
-    }, []);
+    }, [fetchData]);
 
-    return { spinner, projectList, error, loadProjects };
+    return { projectState, loadProjects };
 }

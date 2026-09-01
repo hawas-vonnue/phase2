@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
 import { type Issue } from "../types/issues";
 
+export interface IssueState {
+    list: Issue[];
+    spinner: boolean;
+    error: boolean;
+}
+
 export function useIssues() {
-    const [issuesList, updateIssuesList] = useState<Issue[]>([]);
-    const [spinner, setSpinner] = useState(true);
-    const [error, setError] = useState(false);
+    const [issueState, setIssueState] = useState<IssueState>({
+        list: [],
+        spinner: true,
+        error: false,
+    });
 
     function fetchData() {
         let isMounted = true;
@@ -19,15 +27,21 @@ export function useIssues() {
             })
             .then((response) => {
                 if (isMounted) {
-                    updateIssuesList(response);
-                    setSpinner(false);
+                    setIssueState((prevState) => ({
+                        ...prevState,
+                        list: response,
+                        spinner: false,
+                    }));
                 }
             })
             .catch((error) => {
                 console.log(error);
                 if (isMounted) {
-                    setSpinner(false);
-                    setError(true);
+                    setIssueState((prevState) => ({
+                        ...prevState,
+                        spinner: false,
+                        error: true,
+                    }));
                 }
             });
 
@@ -37,8 +51,12 @@ export function useIssues() {
     }
 
     function loadIssues() {
-        setSpinner(true);
-        setError(false);
+        setIssueState((prevState) => ({
+            ...prevState,
+            spinner: true,
+            error: false,
+        }));
+
         fetchData();
     }
 
@@ -46,5 +64,5 @@ export function useIssues() {
         return fetchData();
     }, []);
 
-    return { issuesList, spinner, error, loadIssues, updateIssuesList };
+    return { issueState, loadIssues, setIssueState };
 }

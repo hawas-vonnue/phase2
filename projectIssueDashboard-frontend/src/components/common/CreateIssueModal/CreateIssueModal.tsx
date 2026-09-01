@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, type Dispatch, type SetStateAction } from "react";
 import type { FormValues, Issue } from "../../../types/issues";
 import "./CreateIssueModal.css";
 import { type IssueFormValues } from "../../../types/issues";
 import { IssueFormValuesZod } from "../../../types/issues";
 import * as z from "zod";
+import type { IssueState } from "../../../hooks/useIssues";
 
 type FormErrors = ReturnType<typeof z.treeifyError<IssueFormValues>>;
 
 export default function CreateIssueModal({
-    updateIssuesList,
+    setIssueState,
     issuesList,
     formValues,
     updateFormValues,
     editStatus,
     updateEditStatus,
 }: {
-    updateIssuesList: (newIssue: Issue[]) => void;
+    setIssueState: Dispatch<SetStateAction<IssueState>>;
     issuesList: Issue[];
     formValues: FormValues;
     updateFormValues: (arg: FormValues) => void;
@@ -31,7 +32,6 @@ export default function CreateIssueModal({
             const tree = z.treeifyError(result.error);
             console.log(tree);
 
-            // updateErrorObject(result.error.flatten().fieldErrors);
             updateErrorObject(tree);
         }
 
@@ -123,7 +123,11 @@ export default function CreateIssueModal({
             body: JSON.stringify(newIssue),
         });
 
-        updateIssuesList(list);
+        setIssueState((prevState) => ({
+            ...prevState,
+            list: list,
+        }));
+
         updateEditStatus({ isEdit: false, id: -1 });
         updateErrorObject(null);
 

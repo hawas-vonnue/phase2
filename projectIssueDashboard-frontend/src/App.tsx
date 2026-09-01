@@ -11,8 +11,7 @@ import Issue from "./pages/Issue";
 import { useIssues } from "./hooks/useIssues";
 
 function App() {
-    const { issuesList, spinner, error, loadIssues, updateIssuesList } =
-        useIssues();
+    const { loadIssues, setIssueState, issueState } = useIssues();
 
     return (
         <>
@@ -27,10 +26,10 @@ function App() {
                                 index
                                 element={
                                     <Issues
-                                        issuesList={issuesList}
-                                        updateIssuesList={updateIssuesList}
-                                        spinner={spinner}
-                                        error={error}
+                                        issuesList={issueState.list}
+                                        setIssueState={setIssueState}
+                                        spinner={issueState.spinner}
+                                        error={issueState.error}
                                         loadIssues={loadIssues}
                                     />
                                 }

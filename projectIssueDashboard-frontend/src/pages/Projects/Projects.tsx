@@ -9,9 +9,9 @@ import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 export default function Projects() {
     useDocumentTitle("Projects");
 
-    const { spinner, projectList, error, loadProjects } = useProjects();
+    const { projectState, loadProjects } = useProjects();
 
-    const projectCards = projectList.map((project) => (
+    const projectCards = projectState.list.map((project) => (
         <ProjectCard
             key={project.id}
             id={project.id}
@@ -24,9 +24,9 @@ export default function Projects() {
     return (
         <>
             <h2>Projects</h2>
-            {spinner ? (
+            {projectState.spinner ? (
                 <Loading />
-            ) : error ? (
+            ) : projectState.error ? (
                 <Error loadFunction={loadProjects} />
             ) : (
                 <div className="projects">
