@@ -10,6 +10,8 @@ import CreateIssueModal from "../../components/common/CreateIssueModal";
 import IssueCard from "../../components/common/IssueCard";
 import Loading from "../../components/common/Loading";
 import Error from "../../components/common/Error";
+import useDebounce from "../../hooks/useDebounce";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -34,6 +36,8 @@ export default function Issues({
     error: boolean;
     loadIssues: () => void;
 }) {
+    useDocumentTitle("Issues");
+
     const [isFilterOn, updateFilterStatus] = useState(false);
 
     const [filterValues, updateFilterValues] = useState({
@@ -66,8 +70,13 @@ export default function Issues({
     const [formValues, updateFormValues] = useState(initialFormValue);
 
     let filterdIssues;
+    const debouncedSearchTerm = useDebounce(filterValues.search, 500);
+
     if (isFilterOn) {
-        filterdIssues = filterIssues(issuesList, filterValues);
+        filterdIssues = filterIssues(issuesList, {
+            ...filterValues,
+            search: debouncedSearchTerm,
+        });
     } else filterdIssues = issuesList;
 
     let sortedIssues;

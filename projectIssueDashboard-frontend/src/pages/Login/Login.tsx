@@ -1,8 +1,11 @@
 import "./Login.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export default function Login() {
+    useDocumentTitle("Login");
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);

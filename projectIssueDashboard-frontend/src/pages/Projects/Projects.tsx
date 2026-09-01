@@ -1,45 +1,15 @@
 import "./Projects.css";
 import ProjectCard from "../../components/common/ProjectCard";
 import EmptyState from "../../components/common/EmptyState";
-import { useEffect, useState } from "react";
 import Loading from "../../components/common/Loading";
 import Error from "../../components/common/Error";
+import { useProjects } from "../../hooks/useProjects";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export default function Projects() {
-    function loadProjects() {
-        setError(false);
-        setSpinner(true);
-        fetch(`${import.meta.env.VITE_url}/projects`)
-            .then((response) => {
-                if (!response.ok) setError(true);
+    useDocumentTitle("Projects");
 
-                return response.json();
-            })
-            .then((response) => {
-                updateProjectList(response);
-                setSpinner(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                setSpinner(false);
-                setError(true);
-            });
-    }
-
-    interface Project {
-        id: number;
-        text: string;
-        name: string;
-        status: string;
-    }
-
-    const [projectList, updateProjectList] = useState<Project[]>([]);
-    const [spinner, setSpinner] = useState(true);
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        loadProjects();
-    }, []);
+    const { spinner, projectList, error, loadProjects } = useProjects();
 
     const projectCards = projectList.map((project) => (
         <ProjectCard
@@ -50,6 +20,7 @@ export default function Projects() {
             status={project.status}
         />
     ));
+
     return (
         <>
             <h2>Projects</h2>

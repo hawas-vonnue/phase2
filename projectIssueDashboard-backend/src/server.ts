@@ -18,6 +18,10 @@ app.use(express.json());
 app.get("/issues", (req: Request, res: Response, next: NextFunction) => {
     setTimeout(async () => {
         try {
+            //to simulate error
+            const isError = Math.floor(Math.random() * 2) % 2 === 0;
+            if (isError) return res.send();
+
             const issueList = await getIssues();
 
             res.status(200).json(issueList);
@@ -31,6 +35,10 @@ app.get(
     "/issues/:id",
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            //to simulate error
+            const isError = Math.floor(Math.random() * 2) % 2 === 0;
+            if (isError) return res.send();
+
             const issue = await getIssue(Number(req.params.id));
 
             if (!issue) return res.status(404).send("not found");
@@ -61,7 +69,9 @@ app.get("/projects", (req: Request, res: Response, next: NextFunction) => {
     setTimeout(async () => {
         try {
             //to simulate error
-            // return res.send();
+            const isError = Math.floor(Math.random() * 2) % 2 === 0;
+            if (isError) return res.send();
+
             const projectList = await getProjects();
 
             res.status(200).json(projectList);
