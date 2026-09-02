@@ -2,9 +2,12 @@ import "./Login.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { useAuth } from "../../context/useAuth";
 
 export default function Login() {
     useDocumentTitle("Login");
+
+    const { login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,9 +17,28 @@ export default function Login() {
     function handleSubmit(event: React.SubmitEvent) {
         event.preventDefault();
 
-        console.log({ email, password, rememberMe });
         //validation logic
-        navigate("/");
+        fetch(`${import.meta.env.VITE_url}/login`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then((response) => {
+                if (response.status === 403)
+                    throw new Error("Error in authentication");
+                return response.json();
+            })
+            .then((response) => {
+                login(response.token, response.user, rememberMe);
+
+                navigate("/");
+            })
+            .catch((error) => alert(error));
     }
 
     return (
@@ -33,6 +55,7 @@ export default function Login() {
                             placeholder="test@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="username"
                         />
                     </div>
                     <div className="field">
@@ -44,6 +67,7 @@ export default function Login() {
                             placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="current-password"
                         />
                     </div>
                     <div className="formActions">

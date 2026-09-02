@@ -9,6 +9,17 @@
     box-sizing: border-box;
 }
 
-.header .titleContainer {
-    width: 100%;
+.rightEnd {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.rightEnd button {
+    padding: 10px;
+    border-radius: 8px;
+    border-color: var(--accent);
+    color: var(--text);
 }

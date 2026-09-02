@@ -17,7 +17,14 @@ export function useIssues() {
     function fetchData() {
         let isMounted = true;
 
-        fetch(`${import.meta.env.VITE_url}/issues`)
+        const token =
+            localStorage.getItem("token") || sessionStorage.getItem("token");
+
+        fetch(`${import.meta.env.VITE_url}/issues`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Response is not ok");

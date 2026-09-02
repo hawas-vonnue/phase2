@@ -8,46 +8,26 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Issue from "./pages/Issue";
-import { useIssues } from "./hooks/useIssues";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-    const { loadIssues, setIssueState, issueState } = useIssues();
+    // const { loadIssues, setIssueState, issueState } = useIssues();
 
     return (
         <>
             <main>
                 <Routes>
                     <Route path="login" element={<Login />} />
-                    <Route element={<MainLayout />}>
-                        <Route index element={<Home />} />
-                        <Route path="projects" element={<Projects />} />
-                        <Route path="issues/*">
-                            <Route
-                                index
-                                element={
-                                    <Issues
-                                        issuesList={issueState.list}
-                                        setIssueState={setIssueState}
-                                        spinner={issueState.spinner}
-                                        error={issueState.error}
-                                        loadIssues={loadIssues}
-                                    />
-                                }
-                            ></Route>
-                            <Route path=":id" element={<Issue />}></Route>;
+                    <Route element={<ProtectedRoute />}>
+                        <Route element={<MainLayout />}>
+                            <Route index element={<Home />} />
+                            <Route path="projects" element={<Projects />} />
+                            <Route path="issues/*">
+                                <Route index element={<Issues />}></Route>
+                                <Route path=":id" element={<Issue />}></Route>;
+                            </Route>
+                            <Route path="profile" element={<Profile />} />
                         </Route>
-                        <Route
-                            path="profile"
-                            element={
-                                <Profile
-                                    name="Pedri Potter"
-                                    bio="Best Midfielder"
-                                    userName="Magician"
-                                    email="pedri@gmail.com"
-                                    url="https://picsum.photos/id/101/200/300"
-                                />
-                            }
-                        />
                     </Route>
                     <Route path="*" element={<NotFound />}></Route>
                 </Routes>
