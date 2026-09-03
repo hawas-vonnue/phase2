@@ -33,7 +33,7 @@ export default function Issues() {
     const spinner = issueState.spinner;
     const error = issueState.error;
 
-    const [isFilterOn, updateFilterStatus] = useState(false);
+    // const [isFilterOn, updateFilterStatus] = useState(false);
 
     const [filterValues, updateFilterValues] = useState({
         search: "",
@@ -64,21 +64,14 @@ export default function Issues() {
 
     const [formValues, updateFormValues] = useState(initialFormValue);
 
-    let filterdIssues;
     const debouncedSearchTerm = useDebounce(filterValues.search, 500);
 
-    if (isFilterOn) {
-        filterdIssues = filterIssues(issuesList, {
-            ...filterValues,
-            search: debouncedSearchTerm,
-        });
-    } else filterdIssues = issuesList;
+    const filterdIssues = filterIssues(issuesList, {
+        ...filterValues,
+        search: debouncedSearchTerm,
+    });
 
-    let sortedIssues;
-
-    if (isFilterOn) {
-        sortedIssues = sortIssues(filterdIssues, sortValues);
-    } else sortedIssues = filterdIssues;
+    const sortedIssues = sortIssues(filterdIssues, sortValues);
 
     const issueCards = sortedIssues.map((issue) => (
         <IssueCard
@@ -119,8 +112,8 @@ export default function Issues() {
                         <CreateIssueButton></CreateIssueButton>
                         <Filter
                             filterValues={filterValues}
-                            isFilterOn={isFilterOn}
-                            updateFilterStatus={updateFilterStatus}
+                            // isFilterOn={isFilterOn}
+                            // updateFilterStatus={updateFilterStatus}
                             updateFilterValues={updateFilterValues}
                             updateSortValues={updateSortValues}
                             sortValues={sortValues}
