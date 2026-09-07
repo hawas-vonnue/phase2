@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container button {
+    width: 80px;
+    padding: 7px;
+    background-color: var(--component-bg);
+    border: 1px solid var(--border);
+}
+
+.container span {
+    color: red;
+}

@@ -29,14 +29,22 @@ export default function RequestForm({
 
         const totalDays = calculateTotalDays(formValues.start, formValues.end);
         const leaveClone = structuredClone(leaves);
-
-        leaveClone.push({
+        const leaveRequest: LeaveType = {
             type: formValues.type,
             startDate: formValues.start,
             endDate: formValues.end,
             reason: formValues.reason,
             status: "pending",
             totalDays,
+        };
+
+        leaveClone.push(leaveRequest);
+        fetch(`${import.meta.env.VITE_url}/leaves`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(leaveRequest),
         });
 
         setLeaves(leaveClone);

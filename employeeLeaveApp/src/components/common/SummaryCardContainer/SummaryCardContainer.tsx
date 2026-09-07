@@ -12,13 +12,13 @@ export default function SummaryCardContainer({
     const totalPaidLeave = 5;
 
     const annualLeave = leaveList.filter(
-        (element) => element.type === "annual"
+        (element) => element.type === "annual" && element.status === "approved"
     ).length;
     const sickLeave = leaveList.filter(
-        (element) => element.type === "sick"
+        (element) => element.type === "sick" && element.status === "approved"
     ).length;
     const paidLeave = leaveList.filter(
-        (element) => element.type === "paid"
+        (element) => element.type === "paid" && element.status === "approved"
     ).length;
 
     return (

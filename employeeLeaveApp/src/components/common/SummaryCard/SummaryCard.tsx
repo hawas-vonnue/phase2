@@ -11,9 +11,6 @@ export default function SummaryCard({
     typeOfLeave: string;
 }) {
     const percentage = (leavesTaken / totalLeaves) * 100;
-    // const leavesTaken = 12;
-    // const totalLeaves = 20;
-    // const typeOfLeave = "annual leave";
 
     return (
         <div className={styles.card}>

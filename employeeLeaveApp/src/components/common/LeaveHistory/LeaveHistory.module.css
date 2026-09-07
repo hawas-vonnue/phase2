@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    min-height: 600px;
+    /* min-height: 600px; */
     background: var(--component-bg);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
@@ -70,4 +70,5 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
 }
