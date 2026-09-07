@@ -1,0 +1,48 @@
+.header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border: solid 1px var(--border);
+    align-items: center;
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.titleContainer svg {
+    @media screen and (width<=1024px) {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile .nameContainer {
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (width<=425px) {
+        display: none;
+    }
+}
+
+.profile .nameContainer span {
+    font-weight: 700;
+    color: var(--text-h);
+}
+
+.profile .nameContainer span:nth-child(2) {
+    font-weight: 300;
+    color: var(--text);
+    max-width: 12ch;
+    font-size: 14px;
+}

@@ -1,0 +1,50 @@
+.container {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+    gap: 6px;
+    background: rgba(6, 78, 59, 0.3);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 16px;
+    min-width: 80px;
+    text-transform: capitalize;
+
+    @media screen and (width<=425px) {
+        padding: 0px;
+        gap: 3px;
+    }
+}
+
+.container.rejected {
+    background: rgba(127, 29, 29, 0.3);
+    border: 1px solid rgba(251, 113, 133, 0.3);
+    color: #fda4af;
+}
+
+.container.rejected svg path {
+    fill: #fb7185;
+}
+
+.container.pending {
+    color: #fcd34d;
+    background: rgba(120, 53, 15, 0.3);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.container.pending svg path {
+    fill: #fbbf24;
+}
+
+.container span {
+    @media screen and (width<=425px) {
+        font-size: 12px;
+        max-width: 6ch;
+    }
+}
+
+.container svg {
+    @media screen and (width<=425px) {
+        margin-left: 6px;
+    }
+}
