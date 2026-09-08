@@ -2,17 +2,17 @@ import "./Issues.css";
 import CreateIssueButton from "../../components/common/CreateIssueButton";
 import Filter from "../../components/common/Filter";
 import EmptyState from "../../components/common/EmptyState";
-import { type FormValues, type Issue } from "../../types/issues";
+import { type FormValues } from "../../types/issues";
 import { filterIssues } from "../../utils/filterIssues";
 import { sortIssues } from "../../utils/sortIssues";
-import { useState, type SetStateAction, type Dispatch } from "react";
+import { useState } from "react";
 import CreateIssueModal from "../../components/common/CreateIssueModal";
 import IssueCard from "../../components/common/IssueCard";
 import Loading from "../../components/common/Loading";
 import Error from "../../components/common/Error";
 import useDebounce from "../../hooks/useDebounce";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
-import type { IssueState } from "../../hooks/useIssues";
+import { useIssues } from "../../hooks/useIssues";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -24,20 +24,14 @@ function isOverdue(date: string) {
     return isPast;
 }
 
-export default function Issues({
-    issuesList,
-    setIssueState,
-    spinner,
-    error,
-    loadIssues,
-}: {
-    issuesList: Issue[];
-    setIssueState: Dispatch<SetStateAction<IssueState>>;
-    spinner: boolean;
-    error: boolean;
-    loadIssues: () => void;
-}) {
+export default function Issues() {
     useDocumentTitle("Issues");
+
+    const { loadIssues, setIssueState, issueState } = useIssues();
+
+    const issuesList = issueState.list;
+    const spinner = issueState.spinner;
+    const error = issueState.error;
 
     const [isFilterOn, updateFilterStatus] = useState(false);
 

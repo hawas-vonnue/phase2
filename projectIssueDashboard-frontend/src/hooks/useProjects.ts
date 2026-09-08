@@ -23,7 +23,14 @@ export function useProjects() {
     const fetchData = useCallback(() => {
         let isMounted = true;
 
-        fetch(`${import.meta.env.VITE_url}/projects`)
+        const token =
+            localStorage.getItem("token") || sessionStorage.getItem("token");
+
+        fetch(`${import.meta.env.VITE_url}/projects`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((response) => {
                 if (!response.ok)
                     setProjectState((prevState) => ({
