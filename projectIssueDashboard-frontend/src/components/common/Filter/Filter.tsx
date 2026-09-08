@@ -1,20 +1,18 @@
 import "./Filter.css";
+import { type SetURLSearchParams } from "react-router";
 
 export default function Filter({
-    // isFilterOn,
     filterValues,
-    // updateFilterStatus,
     updateFilterValues,
     sortValues,
     updateSortValues,
+    setSearchParams,
 }: {
-    // isFilterOn: boolean;
     filterValues: {
         search: string;
         status: string;
         priority: string;
     };
-    // updateFilterStatus: (arg: boolean) => void;
     updateFilterValues: (newFilterValues: {
         search: string;
         status: string;
@@ -25,12 +23,12 @@ export default function Filter({
         field: string;
         direction: string;
     }) => void;
+    setSearchParams: SetURLSearchParams;
 }) {
     function expand(event: React.MouseEvent) {
         event.preventDefault();
         const expandElement = document.querySelector(".expand") as HTMLElement;
         expandElement.classList.toggle("open");
-        // updateFilterStatus(!isFilterOn);
     }
 
     function clear(event: React.MouseEvent) {
@@ -46,12 +44,29 @@ export default function Filter({
             field: "",
             direction: "asc",
         });
+
+        setSearchParams((params) => {
+            params.delete("search");
+            params.delete("status");
+            params.delete("priority");
+            params.delete("field");
+            params.delete("direction");
+
+            return params;
+        });
     }
 
     function handleSortChange(type: "field" | "direction", value: string) {
         updateSortValues({
             ...sortValues,
             [type]: value,
+        });
+
+        setSearchParams((params) => {
+            if (value === "") params.delete(type);
+            else params.set(type, value);
+
+            return params;
         });
     }
 
@@ -62,6 +77,13 @@ export default function Filter({
         updateFilterValues({
             ...filterValues,
             [type]: value,
+        });
+
+        setSearchParams((params) => {
+            if (value === "") params.delete(type);
+            else params.set(type, value);
+
+            return params;
         });
     }
 
