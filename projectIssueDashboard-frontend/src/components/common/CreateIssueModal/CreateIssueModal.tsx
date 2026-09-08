@@ -2,9 +2,9 @@ import React, { useState, type Dispatch, type SetStateAction } from "react";
 import type { FormValues, Issue } from "../../../types/issues";
 import "./CreateIssueModal.css";
 import { type IssueFormValues } from "../../../types/issues";
-import { IssueFormValuesZod } from "../../../types/issues";
 import * as z from "zod";
 import type { IssueState } from "../../../hooks/useIssues";
+import { validate } from "../../../utils/validate";
 
 type FormErrors = ReturnType<typeof z.treeifyError<IssueFormValues>>;
 
@@ -25,19 +25,6 @@ export default function CreateIssueModal({
 }) {
     const [errorObject, updateErrorObject] = useState<FormErrors | null>(null);
 
-    function validate(formValue: IssueFormValues) {
-        const result = IssueFormValuesZod.safeParse(formValue);
-
-        if (!result.success) {
-            const tree = z.treeifyError(result.error);
-            console.log(tree);
-
-            updateErrorObject(tree);
-        }
-
-        return result;
-    }
-
     function createIssue(event: React.SubmitEvent, issuesList: Issue[]) {
         let max = 0;
         issuesList.map((issue) => (max = Math.max(max, issue.id)));
@@ -50,7 +37,7 @@ export default function CreateIssueModal({
             formData.entries()
         ) as unknown as IssueFormValues;
 
-        const result = validate(formValues);
+        const result = validate(formValues, updateErrorObject);
         if (!result.success) return undefined;
 
         const id = max + 1;
@@ -114,11 +101,14 @@ export default function CreateIssueModal({
             });
         } else list.push(newIssue);
 
+        const token =
+            localStorage.getItem("token") || sessionStorage.getItem("token");
         //no need for await because issueList is changed.
         fetch(`${import.meta.env.VITE_url}/issues/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(newIssue),
         });
