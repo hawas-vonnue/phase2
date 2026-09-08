@@ -1,20 +1,20 @@
 import "./Filter.css";
 
 export default function Filter({
-    isFilterOn,
+    // isFilterOn,
     filterValues,
-    updateFilterStatus,
+    // updateFilterStatus,
     updateFilterValues,
     sortValues,
     updateSortValues,
 }: {
-    isFilterOn: boolean;
+    // isFilterOn: boolean;
     filterValues: {
         search: string;
         status: string;
         priority: string;
     };
-    updateFilterStatus: (arg: boolean) => void;
+    // updateFilterStatus: (arg: boolean) => void;
     updateFilterValues: (newFilterValues: {
         search: string;
         status: string;
@@ -30,24 +30,11 @@ export default function Filter({
         event.preventDefault();
         const expandElement = document.querySelector(".expand") as HTMLElement;
         expandElement.classList.toggle("open");
-        updateFilterStatus(!isFilterOn);
+        // updateFilterStatus(!isFilterOn);
     }
 
     function clear(event: React.MouseEvent) {
         event.preventDefault();
-        // const searchElement = document.querySelector(
-        //     "#search"
-        // ) as HTMLInputElement;
-        // const statusElement = document.querySelector(
-        //     "#status"
-        // ) as HTMLSelectElement;
-        // const priorityElement = document.querySelector(
-        //     "#priority"
-        // ) as HTMLSelectElement;
-
-        // searchElement.value = "";
-        // statusElement.selectedIndex = 0;
-        // priorityElement.selectedIndex = 0;
 
         updateFilterValues({
             search: "",
