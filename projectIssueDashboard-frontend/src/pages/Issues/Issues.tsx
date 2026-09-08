@@ -13,6 +13,7 @@ import Error from "../../components/common/Error";
 import useDebounce from "../../hooks/useDebounce";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import { useIssues } from "../../hooks/useIssues";
+import { useSearchParams } from "react-router";
 
 function isOverdue(date: string) {
     const currentDate = new Date();
@@ -29,6 +30,14 @@ export default function Issues() {
 
     const { loadIssues, setIssueState, issueState } = useIssues();
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const search = searchParams.get("search") || "";
+    const status = searchParams.get("status") || "";
+    const priority = searchParams.get("priority") || "";
+    const field = searchParams.get("field") || "";
+    const direction = searchParams.get("direction") || "asc";
+
     const issuesList = issueState.list;
     const spinner = issueState.spinner;
     const error = issueState.error;
@@ -36,14 +45,14 @@ export default function Issues() {
     // const [isFilterOn, updateFilterStatus] = useState(false);
 
     const [filterValues, updateFilterValues] = useState({
-        search: "",
-        status: "",
-        priority: "",
+        search,
+        status,
+        priority,
     });
 
     const [sortValues, updateSortValues] = useState({
-        field: "",
-        direction: "",
+        field,
+        direction,
     });
 
     const [editStatus, updateEditStatus] = useState({
@@ -71,7 +80,14 @@ export default function Issues() {
         search: debouncedSearchTerm,
     });
 
-    const sortedIssues = sortIssues(filterdIssues, sortValues);
+    const grouped = Object.groupBy(filterdIssues, ({ status }) => status);
+
+    const groupedIssues = [
+        ...(grouped.active || []),
+        ...(grouped.completed || []),
+    ];
+
+    const sortedIssues = sortIssues(groupedIssues, sortValues);
 
     const issueCards = sortedIssues.map((issue) => (
         <IssueCard
@@ -111,9 +127,8 @@ export default function Issues() {
                     <div className="accessories">
                         <CreateIssueButton></CreateIssueButton>
                         <Filter
+                            setSearchParams={setSearchParams}
                             filterValues={filterValues}
-                            // isFilterOn={isFilterOn}
-                            // updateFilterStatus={updateFilterStatus}
                             updateFilterValues={updateFilterValues}
                             updateSortValues={updateSortValues}
                             sortValues={sortValues}

@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Issue from "./pages/Issue";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Gallery from "./pages/Gallery";
 
 function App() {
     // const { loadIssues, setIssueState, issueState } = useIssues();
@@ -17,6 +18,7 @@ function App() {
         <>
             <main>
                 <Routes>
+                    <Route path="gallery" element={<Gallery />}></Route>
                     <Route path="login" element={<Login />} />
                     <Route element={<ProtectedRoute />}>
                         <Route element={<MainLayout />}>
