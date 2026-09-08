@@ -71,7 +71,14 @@ export default function Issues() {
         search: debouncedSearchTerm,
     });
 
-    const sortedIssues = sortIssues(filterdIssues, sortValues);
+    const grouped = Object.groupBy(filterdIssues, ({ status }) => status);
+
+    const groupedIssues = [
+        ...(grouped.active || []),
+        ...(grouped.completed || []),
+    ];
+
+    const sortedIssues = sortIssues(groupedIssues, sortValues);
 
     const issueCards = sortedIssues.map((issue) => (
         <IssueCard

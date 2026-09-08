@@ -11,7 +11,14 @@ export default function Projects() {
 
     const { projectState, loadProjects } = useProjects();
 
-    const projectCards = projectState.list.map((project) => (
+    const grouped = Object.groupBy(projectState.list, ({ status }) => status);
+
+    const sortedProjects = [
+        ...(grouped.pending || []),
+        ...(grouped.completed || []),
+    ];
+
+    const sortedProjectsList = sortedProjects.map((project) => (
         <ProjectCard
             key={project.id}
             id={project.id}
@@ -30,10 +37,10 @@ export default function Projects() {
                 <Error loadFunction={loadProjects} />
             ) : (
                 <div className="projects">
-                    {projectCards.length === 0 ? (
+                    {sortedProjects.length === 0 ? (
                         <EmptyState></EmptyState>
                     ) : (
-                        projectCards
+                        sortedProjectsList
                     )}
                 </div>
             )}

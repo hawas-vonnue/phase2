@@ -14,8 +14,6 @@ export default function Profile() {
 
     if (!user) return null;
 
-    console.log(user);
-
     return (
         <div className="profileParent">
             <div className="profile">
